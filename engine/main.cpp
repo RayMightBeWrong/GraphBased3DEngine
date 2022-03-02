@@ -5,6 +5,12 @@
 #endif
 
 #include <math.h>
+#include <cstring>
+#include <cstdio>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <vector>
 
 float length = 2;
 float subDivisions = 10;
@@ -26,7 +32,7 @@ void changeSize(int w, int h) {
 	glLoadIdentity();
 	
 	// Set the viewport to be the entire window
-    glViewport(0, 0, w, h);
+	glViewport(0, 0, w, h);
 
 	// Set perspective
 	gluPerspective(45.0f ,ratio, 1.0f ,1000.0f);
@@ -36,52 +42,60 @@ void changeSize(int w, int h) {
 }
 
 
-void renderScene(void) {
+std::vector<std::vector<float>> vertices;
 
+void drawReadVertices(){
+	for(int i = 0; i < vertices.size(); i++)
+		glVertex3f(vertices[i][0], vertices[i][1], vertices[i][2]);
+}
+
+void renderScene(void) {
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(0,1.0,2.0, 
+	gluLookAt(5,5,5, 
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 	glPolygonMode(GL_FRONT,GL_LINE);
 
 	glBegin(GL_TRIANGLES);
-	for (float x = -length/2;x < length/2;x += length/subDivisions) {
-		for (float z = -length/2;z < length/2;z += length/subDivisions) {
-			glVertex3f(x+length/subDivisions,0,z);
-			glVertex3f(x,0,z);
-			glVertex3f(x,0,z+ length/subDivisions);
-			
-			glVertex3f(x,0,z+ length/subDivisions);
-			glVertex3f(x+length/subDivisions,0,z+ length/subDivisions);
-			glVertex3f(x+length/subDivisions,0,z);
-		}
-	}
+	drawReadVertices();
 	glEnd();
-	
 
 	// End of frame
 	glutSwapBuffers();
 }
 
+void readVertices(std::ifstream& myFile){
+	int i = 0;
+	std::string line;
+	while (std::getline(myFile, line)){
+		float value;
+		std::stringstream ss(line);
+		vertices.push_back(std::vector<float>());
+		while (ss >> value)
+			vertices[i].push_back(value);
+	       	++i;
+	}
+}
 
 int main(int argc, char **argv) {
+	std::ifstream myFile("../../generator/build/asd.3d");
+	readVertices(myFile);	
 
 // init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(800,800);
-	glutCreateWindow("CG@DI-UM");
+	glutCreateWindow("CG@ENGINE");
 		
 // Required callback registry 
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
-	
 //  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
