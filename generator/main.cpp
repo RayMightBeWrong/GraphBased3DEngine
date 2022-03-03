@@ -10,8 +10,6 @@
 #include <fstream>
 #include <iostream>
 
-using namespace std;
-
 char *file;
 
 float length = 0;
@@ -19,13 +17,13 @@ float subDivisions = 0;
 
 int figure = 0;
 
-void writeV(ofstream& myFile, float x, float y, float z){
+void writeV(std::ofstream& myFile, float x, float y, float z){
 	myFile << x; myFile << " ";
 	myFile << y; myFile << " ";
 	myFile << z; myFile << "\n";
 }
 
-void drawPlane(ofstream& myFile){
+void drawPlane(std::ofstream& myFile){
 	for (float x = -length/2;x < length/2;x += length/subDivisions) {
 		for (float z = -length/2;z < length/2;z += length/subDivisions) {
 			writeV(myFile,x+length/subDivisions,0,z);
@@ -65,7 +63,7 @@ int handleInput(int argc, char **argv){
 
 int main(int argc, char **argv) {
 	if(handleInput(argc, argv) == 1){
-		ofstream myfile(file);
+		std::ofstream myfile(file);
 		switch(figure){
 			case 4:
 				drawPlane(myfile); break;
