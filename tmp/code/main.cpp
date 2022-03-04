@@ -2,12 +2,20 @@
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
-#endif
-
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <cstdio>
 #include <cstring>
+#include <vector>
+#include "Vertice.cpp"
+#include "Esfera.cpp"
+#include "Cubo.cpp"
+#include "Plano.cpp"
+#endif
+
+
+Modelo *m;
+int angle = 0;
 
 void changeSize(int w, int h) {
 
@@ -38,80 +46,20 @@ void changeSize(int w, int h) {
 void axis_system(){
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
-        glBegin(GL_LINES);
-        glColor3f(1.0, 0.0, 0.0);
-        glVertex3f(0, 0, 0);
-        glVertex3f(3, 0, 0);
+    glBegin(GL_LINES);
+	
+    glColor3f(1.0, 0.0, 0.0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(100.000, 0, 0);
 
-        glColor3f(0.0, 1.0, 0.0);
-        glVertex3f(0, 0, 0);
-        glVertex3f(0, 3, 0);
+    glColor3f(0.0, 1.0, 0.0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 100.000, 0);
 
-        glColor3f(0.0, 0.0, 1.0);
-        glVertex3f(0, 0, 0);
-        glVertex3f(0, 0, 3);
-
-        glEnd();
-}
-
-int figure = 0;
-float length, subDivisions;
-
-void drawPlaneTXY(float l1, float l2, float factor){
-	glVertex3f(l1,l2,length*factor);
-	glVertex3f(l1+length/subDivisions,l2,length*factor);
-	glVertex3f(l1,l2+length/subDivisions,length*factor);
-		
-	glVertex3f(l1+length/subDivisions,l2+length/subDivisions,length*factor);
-	glVertex3f(l1,l2+length/subDivisions,length*factor);
-	glVertex3f(l1+length/subDivisions,l2,length*factor);
-}
-
-
-void drawPlaneTXZ(float l1, float l2, float factor){
-	glVertex3f(l1+length/subDivisions,length*factor,l2);
-	glVertex3f(l1,length*factor,l2);
-	glVertex3f(l1,length*factor,l2+length/subDivisions);
-		
-	glVertex3f(l1,length*factor,l2+length/subDivisions);
-	glVertex3f(l1+length/subDivisions,length*factor,l2+length/subDivisions);
-	glVertex3f(l1+length/subDivisions,length*factor,l2);
-}
-
-
-void drawPlaneTYZ(float l1, float l2, float factor){
-	glVertex3f(length*factor,l1,l2);
-	glVertex3f(length*factor,l1+length/subDivisions,l2);
-	glVertex3f(length*factor,l1,l2+length/subDivisions);
-		
-	glVertex3f(length*factor,l1+length/subDivisions,l2+length/subDivisions);
-	glVertex3f(length*factor,l1,l2+length/subDivisions);
-	glVertex3f(length*factor,l1+length/subDivisions,l2);
-}
-
-void drawPlane(){
-	glBegin(GL_TRIANGLES);
-        for (float x = -length/2;x < length/2;x += length/subDivisions) {
-                for (float z = -length/2;z < length/2;z += length/subDivisions) {
-			drawPlaneTXZ(x, z, 0);
-                }
-        }
-	glEnd();
-}
-
-void drawCube(){
-	glBegin(GL_TRIANGLES);
-        for (float l1 = -length/2; l1 < length/2; l1 += length/subDivisions) {
-                for (float l2 = -length/2; l2 < length/2; l2 += length/subDivisions) {
-			drawPlaneTXY(l1, l2, 0.5);
-			//drawPlaneXY(l1, l2, -0.5);
-			drawPlaneTXZ(l1, l2, 0.5);
-			//drawPlaneXZ(l1, l2, -0.5);
-			drawPlaneTYZ(l1, l2, 0.5);
-			//drawPlaneYZ(l1, l2, -0.5);
-                }
-        }
-	glEnd();
+    glColor3f(0.0, 0.0, 1.0);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 0, 100.000);
+    glEnd();
 }
 
 void renderScene(void) {
@@ -123,21 +71,11 @@ void renderScene(void) {
 	gluLookAt(5.0,5.0,5.0, 
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
-
-	glPolygonMode(GL_FRONT, GL_LINE);
+	glPolygonMode(GL_FRONT,GL_LINE);
 	axis_system();
-	glColor3f(1,1,1);
-	switch(figure){
-		case 2:
-			drawCube(); break;
-
-		case 4:
-			drawPlane(); break;
-
-		default:
-			printf("oof\n"); break;
-	}
-
+	glRotatef(angle,0,1,0);
+	angle++;
+	m->draw();
 	// End of frame
 	glutSwapBuffers();
 }
@@ -145,21 +83,15 @@ void renderScene(void) {
 int handleInput(int argc, char **argv){
         if (argc == 4){
                 if(!strcmp(argv[1], "box")){
-                        figure = 2;
+					int tamanho;
+					sscanf(argv[2], "%d", &tamanho);
+					float subDivisoes;
+					sscanf(argv[3], "%f", &subDivisoes);
+					m = new Cubo(tamanho,subDivisoes);
                 }
                 else if (!strcmp(argv[1], "plane")){
-                        //tratar dos erros
-                        figure = 4;
                 }
-		length = atoi(argv[2]);
-		subDivisions = atoi(argv[3]);
         }
-        else if (argc == 5 && !strcmp(argv[1], "sphere"))
-                figure = 1;
-        else if (argc == 6 && !strcmp(argv[1], "cone"))
-                figure = 3;
-        else return 0;
-
         return 1;
 }
 
@@ -174,6 +106,7 @@ int main(int argc, char **argv) {
 		
 	// Required callback registry 
 		glutDisplayFunc(renderScene);
+		glutIdleFunc(renderScene);
 		glutReshapeFunc(changeSize);
 
 	//  OpenGL settings
