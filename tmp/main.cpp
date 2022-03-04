@@ -114,6 +114,30 @@ void drawCube(){
 	glEnd();
 }
 
+void drawCone(float radius, float height, int slices, int stacks){
+	float ogAngle = 2 * M_PI / slices;
+	float angle = 2 * M_PI / slices;
+
+	glBegin(GL_TRIANGLES);
+
+	for(int i = 0; i < slices; i++){
+		glVertex3f(0,0,0);
+		glVertex3f(radius * sin(angle),0,radius * cos(angle));
+		glVertex3f(radius * sin(angle + ogAngle),0,radius * cos(angle + ogAngle));
+		angle += 2 * M_PI / slices;
+        }
+
+	for(int i = 0; i < slices; i++){
+		glVertex3f(0,height,0);
+		glVertex3f(radius * sin(angle),0,radius * cos(angle));
+		glVertex3f(radius * sin(angle + ogAngle),0,radius * cos(angle + ogAngle));
+		angle += 2 * M_PI / slices;
+	}
+
+	glEnd();
+}
+
+
 void renderScene(void) {
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
