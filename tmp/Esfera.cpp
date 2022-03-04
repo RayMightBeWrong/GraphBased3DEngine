@@ -21,20 +21,31 @@ public:
 };
 
 void Esfera::draw() {
+
     std::vector<Vertice> vertices;
 	std::vector<std::vector<int>> indices;
 	
-	float sliceSize = 2 * M_PI/	slices;
-	float stackSize = M_PI/stacks;
+	float sliceCounter = 2 * M_PI/	slices;
+	float stackCounter = M_PI/stacks;
 
+	// Calcular os vertices atraves da funçoes parametricas
 	for (int i = 0; i <= stacks;i++) {
-		float stackAngle = M_PI_2 - i * stackSize;
+		//Calcular angulo da stack atual(phi)
+		float stackAngle = M_PI_2 - i * stackCounter;
+
+		//Calcular o y com o angulo. y = r * sin(phi)
 		float y = raio * sinf(stackAngle);
+
+		// Vector com a posicao de todos os vertices do slice
 		std::vector<int> verticesSlice;
 		for (int s = 0; s < slices;s++) {
-			float sliceAngle = s * sliceSize;
+			// Calcular angulo da slice (theta)
+			float sliceAngle = s * sliceCounter;
+			//Calcular x. x = r * cos(phi) * sin(theta)
 			float x = raio * cosf(stackAngle) * sinf(sliceAngle);
+			//Calcular z. z = r * cos(phi) * cos(theta)
 			float z = raio * cosf(stackAngle) * cosf(sliceAngle);
+
 			Vertice v = Vertice(x,y,z);
 			vertices.push_back(v);
 			verticesSlice.push_back(vertices.size() - 1);
@@ -42,12 +53,14 @@ void Esfera::draw() {
 		indices.push_back(verticesSlice);
 	}
 
-	for (GLuint i = 0; i < stacks; i++)
+	// Percorrer todos os vertices de forma a formar os triangulos
+	// Posicao [i][j] do vector dos indices corresponde aos vertices do stack i no slice j
+	for (int i = 0; i < stacks; i++)
 	{
 		glBegin(GL_TRIANGLE_STRIP);
-		for (GLuint j = 0; j < slices; j++)
+		for (int j = 0; j < slices; j++)
 		{
-			GLuint index = indices[i][j];
+			int index = indices[i][j];
 			glVertex3f(vertices[index].x,vertices[index].y,vertices[index].z);
 			index = indices[i + 1][j];
 			glVertex3f(vertices[index].x,vertices[index].y,vertices[index].z);

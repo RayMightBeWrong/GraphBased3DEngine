@@ -62,6 +62,30 @@ void axis_system(){
     glEnd();
 }
 
+void drawCone(float radius, float height, int slices, int stacks){
+	float ogAngle = 2 * M_PI / slices;
+	float angle = 2 * M_PI / slices;
+
+	glBegin(GL_TRIANGLES);
+
+	for(int i = 0; i < slices; i++){
+		glVertex3f(0,0,0);
+		glVertex3f(radius * sin(angle),0,radius * cos(angle));
+		glVertex3f(radius * sin(angle + ogAngle),0,radius * cos(angle + ogAngle));
+		angle += 2 * M_PI / slices;
+        }
+
+	for(int i = 0; i < slices; i++){
+		glVertex3f(0,height,0);
+		glVertex3f(radius * sin(angle),0,radius * cos(angle));
+		glVertex3f(radius * sin(angle + ogAngle),0,radius * cos(angle + ogAngle));
+		angle += 2 * M_PI / slices;
+	}
+
+	glEnd();
+}
+
+
 void renderScene(void) {
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -71,7 +95,8 @@ void renderScene(void) {
 	gluLookAt(5.0,5.0,5.0, 
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
-	glPolygonMode(GL_FRONT,GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+	glDisable(GL_CULL_FACE);
 	axis_system();
 	glRotatef(angle,0,1,0);
 	angle++;
@@ -90,8 +115,26 @@ int handleInput(int argc, char **argv){
 					m = new Cubo(tamanho,subDivisoes);
                 }
                 else if (!strcmp(argv[1], "plane")){
+					int tamanho;
+					sscanf(argv[2], "%d", &tamanho);
+					float subDivisoes;
+					sscanf(argv[3], "%f", &subDivisoes);
+					m = new Plano(tamanho,subDivisoes);
                 }
         }
+		else if (argc == 5 && !strcmp(argv[1],"sphere")) {
+			int raio;
+			sscanf(argv[2], "%d", &raio);
+			int slices;
+			sscanf(argv[3], "%d", &slices);
+			int stacks;
+			sscanf(argv[4], "%d", &stacks);
+			m = new Esfera(raio,slices,stacks);
+		}
+		else if (argc == 6 && !strcmp(argv[1],"cone")) {
+			//COdigo do cone;
+		}
+		else return 0;
         return 1;
 }
 
