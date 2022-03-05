@@ -1,22 +1,10 @@
-#include <GL/glut.h>
-class Cubo : public Modelo {
-    public:
-        int tamanho;
-        float subDivisions;
-        Cubo(int tam,float sub) : Modelo(){
-            tamanho = tam;
-            subDivisions = sub;
-        }
-		void saveModel(std::ofstream &file);
-    private:
-        void savePlaneTXY(float z,std::ofstream &file);
-        void savePlaneTXZ(float y,std::ofstream &file);
-        void savePlaneTYZ(float x,std::ofstream &file);
-		void savePlaneTXYBack(float z,std::ofstream &file);
-		void savePlaneTXZBack(float y,std::ofstream &file);
-		void savePlaneTYZBack(float x,std::ofstream &file);
+#include "Cubo.h"
+using namespace Modelos;
 
-};
+Cubo::Cubo(int tam,float sub){
+	tamanho = tam;
+	subDivisions = sub;
+}
 
 void Cubo::saveModel(std::ofstream &file){
 	savePlaneTXZBack(0,file);

@@ -10,10 +10,11 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include "../models/Modelo.cpp"
-#include "../models/Esfera.cpp"
-#include "../models/Cubo.cpp"
-#include "../models/Plano.cpp"
+#include "../models/Modelo.h"
+#include "../models/Esfera.h"
+#include "../models/Cubo.h"
+#include "../models/Plano.h"
+using namespace Modelos;
 using namespace std;
 
 ofstream file;

@@ -1,37 +1,20 @@
-#include <GL/glut.h>
-#include <vector>
-#define _USE_MATH_DEFINES
+#include "Esfera.h"
 #include <math.h>
+#define _USE_MATH_DEFINES
 
-class Vertice
-{
-public:
-    Vertice();
-    Vertice(float x,float y,float z) {
+using namespace Modelos;
+
+Vertice::Vertice(float x,float y,float z) {
         this->x = x;
         this->y = y;
         this->z = z;
-    }
+}
 
-    float x;
-    float y;
-    float z;
-    
-};
-
-class Esfera : public Modelo {
-
-public:
-    int raio;
-    int slices;
-    int stacks;
-    Esfera(int r,int sli,int sta) :Modelo(){
+Esfera::Esfera(int r,int sli,int sta){
         raio = r;
         slices = sli;
         stacks = sta;
-    }
-	void saveModel(std::ofstream &file);
-};
+}
 
 void Esfera::saveModel(std::ofstream &file) {
 	
@@ -63,10 +46,6 @@ void Esfera::saveModel(std::ofstream &file) {
 
         for(int j = 0; j < slices; ++j, ++vi1, ++vi2)
         {
-            // get 4 vertices per sector
-            //  v1--v3
-            //  |    |
-            //  v2--v4
             Vertice v1 = vertices[vi1];
             Vertice v2 = vertices[vi2];
             Vertice v3 = vertices[vi1 + 1];

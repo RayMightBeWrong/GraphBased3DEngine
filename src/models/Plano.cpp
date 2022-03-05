@@ -1,18 +1,10 @@
+#include "Plano.h"
+using namespace Modelos;
 
-class Plano : public Modelo
-{
-public:
-    int tamanho;
-    float subDivisions;
-
-    Plano(int l,float sub) : Modelo(){
+Plano::Plano(int l,float sub){
         tamanho = l;
         subDivisions = sub;
-    }
-    void saveModel(std::ofstream &file);
-private:
-    void savePlaneTXZ(float y,std::ofstream &file);
-};
+}
 
 void Plano::saveModel(std::ofstream &file) {
     savePlaneTXZ(0,file);

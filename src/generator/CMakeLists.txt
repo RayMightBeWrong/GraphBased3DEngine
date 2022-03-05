@@ -3,9 +3,10 @@ cmake_minimum_required(VERSION 3.5)
 # Project Name
 PROJECT(generator)
 
+set(SOURCES ../models/Modelo.cpp ../models/Cubo.cpp ../models/Plano.cpp ../models/Esfera.cpp ../models/Modelo.h ../models/Cubo.h ../models/Esfera.h ../models/Plano.h)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-add_executable(${PROJECT_NAME} main.cpp)
-
+add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
+target_include_directories(${PROJECT_NAME} PRIVATE "../models")
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
 link_directories(${OpenGL_LIBRARY_DIRS})
