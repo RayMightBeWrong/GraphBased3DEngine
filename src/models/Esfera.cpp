@@ -19,7 +19,7 @@ Esfera::Esfera(int r,int sli,int sta){
 void Esfera::saveModel(std::ofstream &file) {
 	
 	std::vector<Vertice> vertices;
-	float sectorStep = 2 * M_PI / slices;
+	float sliceStep = 2 * M_PI / slices;
     float stackStep = M_PI / stacks;
 
 	for (int i = 0; i <= stacks; i++)
@@ -30,7 +30,7 @@ void Esfera::saveModel(std::ofstream &file) {
 		
 		for (int j = 0; j <= slices; j++)
 		{
-			float sliceAngle = j * sectorStep;
+			float sliceAngle = j * sliceStep;
 			float x = xy * sin(sliceAngle);
 			float z = xy * cos(sliceAngle);
 			

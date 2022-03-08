@@ -14,6 +14,7 @@
 #include "../models/Esfera.h"
 #include "../models/Cubo.h"
 #include "../models/Plano.h"
+#include "../models/Cone.cpp"
 using namespace Modelos;
 using namespace std;
 
@@ -60,6 +61,5 @@ int main(int argc, char **argv) {
 		m->saveModel(file);
   		file.close();
 	}
-
 	return 1;
 }
