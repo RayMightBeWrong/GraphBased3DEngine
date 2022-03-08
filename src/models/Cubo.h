@@ -18,7 +18,6 @@ namespace Modelos
 		void savePlaneTXYBack(float z,std::ofstream &file);
 		void savePlaneTXZBack(float y,std::ofstream &file);
 		void savePlaneTYZBack(float x,std::ofstream &file);
-
 };
 
 }

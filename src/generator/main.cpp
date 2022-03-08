@@ -14,7 +14,7 @@
 #include "../models/Esfera.h"
 #include "../models/Cubo.h"
 #include "../models/Plano.h"
-#include "../models/Cone.cpp"
+#include "../models/Cone.h"
 using namespace Modelos;
 using namespace std;
 
@@ -51,6 +51,15 @@ int handleInput(int argc, char **argv){
 	}
 	else if (argc == 7 && !strcmp(argv[1], "cone")){
 		file.open(argv[6]);
+		int raio;
+		sscanf(argv[2], "%d", &raio);
+		int altura;
+		sscanf(argv[3], "%d", &altura);
+		int slices;
+		sscanf(argv[4], "%d", &slices);
+		int stacks;
+		sscanf(argv[5], "%d", &stacks);
+		m = new Cone(raio,altura,slices,stacks);
 	}
 	else return 0;
 	return 1;

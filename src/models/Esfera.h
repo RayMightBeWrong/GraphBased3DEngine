@@ -2,6 +2,8 @@
 #define ESFERA_H
 #include "Modelo.h"
 #include <vector>
+#include <math.h>
+#define _USE_MATH_DEFINES
 
 
 namespace Modelos

@@ -11,10 +11,10 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include "parserXML/tinyxml2.h"
 
 float length = 2;
 float subDivisions = 10;
-
 
 void changeSize(int w, int h) {
 
@@ -82,8 +82,6 @@ void readVertices(std::ifstream& myFile){
 }
 
 int main(int argc, char **argv) {
-	std::ifstream myFile("../../generator/build/asd.3d");
-	readVertices(myFile);	
 
 // init GLUT and the window
 	glutInit(&argc, argv);
