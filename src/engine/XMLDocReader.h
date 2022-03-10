@@ -16,6 +16,8 @@ class XMLParser {
         std::vector<std::string> modelos;
 
         XMLError loadXML(std::string file);
+        bool parse();
+    private:    
         bool parseCameraXML();
         bool parseModelsXML();
 };

@@ -10,6 +10,10 @@ XMLError XMLParser::loadXML(string nameFile) {
     return doc.LoadFile(nameFile.c_str());
 }
 
+bool XMLParser::parse() {
+	return parseCameraXML() && parseModelsXML();
+}
+
 bool XMLParser::parseCameraXML() {
 	XMLNode* root = doc.FirstChildElement("world"); if (!root) return false;
 	XMLNode* camera = root->FirstChildElement("camera"); if (!camera) return false;

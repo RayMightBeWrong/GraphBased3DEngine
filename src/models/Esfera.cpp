@@ -16,46 +16,44 @@ Esfera::Esfera(int r,int sli,int sta){
 
 void Esfera::saveModel(std::ofstream &file) {
 	
-	std::vector<Vertice> vertices;
 	float sliceStep = 2 * M_PI / slices;
     float stackStep = M_PI / stacks;
 
-	for (int i = 0; i <= stacks; i++)
+	for (int i = 0; i < stacks; i++)
 	{
 		float stackAngle = M_PI_2 - i * stackStep;
-		float xy = raio * cos(stackAngle);
-		float y = raio * sin(stackAngle);
+		float stackAngle2 = M_PI_2 - (i + 1) * stackStep;
+		float xy = raio * cos(stackAngle); float xy2 = raio * cos(stackAngle2);
+		float y = raio * sin(stackAngle); float y2 = raio * sin(stackAngle2);
 		
-		for (int j = 0; j <= slices; j++)
+		for (int j = 0; j < slices; j++)
 		{
 			float sliceAngle = j * sliceStep;
-			float x = xy * sin(sliceAngle);
-			float z = xy * cos(sliceAngle);
+			float sliceAngle2 = (j+1) * sliceStep;
+			float x1 = xy * sin(sliceAngle);float x2 = xy * sin(sliceAngle2);
+			float z1 = xy * cos(sliceAngle);float z2 = xy * cos(sliceAngle2);
+
+			float x3 = xy2 * sin(sliceAngle); float x4 = xy2 * sin(sliceAngle2);
+			float z3 = xy2 * cos(sliceAngle); float z4 = xy2 * cos(sliceAngle2);
+
+/*           Stack entre as slides j e j+1
+			Para desenhar cada stack basta ligar os vertices formando um quadrado
+			(x1,z1) ------------- (x2,z2)
+			   |                     |
+			   |                     |
+			   |                     | 
+			   |                     |
+			   |                     |
+			(x3,z3) ------------- (x4,z4)   */
 			
-			Vertice v(x,y,z);
-			vertices.push_back(v);
-		}
-	}
+			writeV(file,x1,y,z1);
+			writeV(file,x3,y2,z3);
+			writeV(file,x4,y2,z4);
 
-	for(int i = 0; i < stacks; ++i)
-    {
-        int vi1 = i * (slices + 1);           
-        int vi2 = (i + 1) * (slices + 1);
+			writeV(file,x4,y2,z4);
+			writeV(file,x2,y,z2);
+			writeV(file,x1,y,z1);
 
-        for(int j = 0; j < slices; ++j, ++vi1, ++vi2)
-        {
-            Vertice v1 = vertices[vi1];
-            Vertice v2 = vertices[vi2];
-            Vertice v3 = vertices[vi1 + 1];
-            Vertice v4 = vertices[vi2 + 1];
-
-			writeV(file,v1.x,v1.y,v1.z);
-			writeV(file,v2.x,v2.y,v2.z);
-			writeV(file,v3.x,v3.y,v3.z);
-
-			writeV(file,v2.x,v2.y,v2.z);
-			writeV(file,v4.x,v4.y,v4.z);
-			writeV(file,v3.x,v3.y,v3.z);
 		}
 	}
 }

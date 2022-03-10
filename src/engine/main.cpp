@@ -72,7 +72,7 @@ void renderScene(void) {
 	gluLookAt(parser.camPX,parser.camPY,parser.camPZ, 
 		      parser.camLX,parser.camLY,parser.camLZ,
 			  parser.camUX,parser.camUY,parser.camUZ);
-	glPolygonMode(GL_FRONT,GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 	glBegin(GL_TRIANGLES);
 	drawReadVertices();
 	glEnd();
@@ -99,19 +99,26 @@ int main(int argc, char **argv) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);	
 
-	if (parser.loadXML("../tests/test_1_5.xml") == XML_SUCCESS) {
-		parser.parseCameraXML();
-		parser.parseModelsXML();
-		for (int i = 0; i < parser.modelos.size();i++) {
-			fstream f;f.open(parser.modelos[i],fstream::in);
-			readVertices(f);
-			f.close();
+	if (argc == 2) {
+		if (parser.loadXML(argv[1]) == XML_SUCCESS) {
+			bool sucess = parser.parse();
+			if (sucess) {
+				for (int i = 0; i < parser.modelos.size() && sucess;i++) {
+					fstream f;f.open(parser.modelos[i],fstream::in);
+					if (!f.fail()) {
+						readVertices(f);
+						f.close();
+					}
+					else sucess = false;
+				}
+			}
+			if (sucess) glutMainLoop();
+			else {
+				std::cout << "Erro no parsing do ficheiro de configuracao" << std::endl;
+			}
 		}
+		else std::cerr << "Erro na abertura do ficheiro" << std::endl;
 	}
-	
-	
-// enter GLUT's main cycle
-	glutMainLoop();
 	
 	return 1;
 }
