@@ -1,7 +1,7 @@
 #include "Plano.h"
 using namespace Modelos;
 
-Plano::Plano(int l,float sub){
+Plano::Plano(float l,float sub){
         tamanho = l;
         subDivisions = sub;
 }

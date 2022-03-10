@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 
 # Project Name
-PROJECT(engine)
+PROJECT(CG)
 
-set(SOURCES parserXML/tinyxml2.cpp parserXML/tinyxml2.h XMLDocReader.cpp XMLDocReader.h)
+set(SOURCES parserXML/tinyxml2.cpp parserXML/tinyxml2.h)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
+add_subdirectory(generator)
+add_subdirectory(engine)
 
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
@@ -45,7 +45,6 @@ else (WIN32) #Linux and Mac
 	link_directories(${GLUT_LIBRARY_DIRS})
 	add_definitions(${GLUT_DEFINITIONS})
 	
-	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
 	if(NOT GLUT_FOUND)
 	   message(ERROR ": GLUT not found!")
 	endif(NOT GLUT_FOUND)

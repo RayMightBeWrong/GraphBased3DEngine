@@ -11,13 +11,15 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include "XMLDocReader.h"
 #include "parserXML/tinyxml2.h"
+using namespace std;
+using namespace tinyxml2;
 
-float length = 2;
-float subDivisions = 10;
+vector<vector<float>> vertices;
+XMLParser parser;
 
 void changeSize(int w, int h) {
-
 	// Prevent a divide by zero, when window is too short
 	// (you cant make a window with zero width).
 	if(h == 0)
@@ -35,18 +37,30 @@ void changeSize(int w, int h) {
 	glViewport(0, 0, w, h);
 
 	// Set perspective
-	gluPerspective(45.0f ,ratio, 1.0f ,1000.0f);
+	gluPerspective(parser.projFOV ,ratio, parser.projNEAR ,parser.projFAR);
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
 }
 
 
-std::vector<std::vector<float>> vertices;
-
 void drawReadVertices(){
 	for(int i = 0; i < vertices.size(); i++)
 		glVertex3f(vertices[i][0], vertices[i][1], vertices[i][2]);
+}
+
+
+void readVertices(fstream& myFile){
+	string line;
+	while (getline(myFile, line)){
+		float value;
+		stringstream ss(line);
+		vector<float> coords;
+		while (ss >> value) {
+			coords.push_back(value);
+		}
+		vertices.push_back(coords);
+	}
 }
 
 void renderScene(void) {
@@ -55,11 +69,10 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(5,5,5, 
-		      0.0,0.0,0.0,
-			  0.0f,1.0f,0.0f);
+	gluLookAt(parser.camPX,parser.camPY,parser.camPZ, 
+		      parser.camLX,parser.camLY,parser.camLZ,
+			  parser.camUX,parser.camUY,parser.camUZ);
 	glPolygonMode(GL_FRONT,GL_LINE);
-
 	glBegin(GL_TRIANGLES);
 	drawReadVertices();
 	glEnd();
@@ -68,18 +81,6 @@ void renderScene(void) {
 	glutSwapBuffers();
 }
 
-void readVertices(std::ifstream& myFile){
-	int i = 0;
-	std::string line;
-	while (std::getline(myFile, line)){
-		float value;
-		std::stringstream ss(line);
-		vertices.push_back(std::vector<float>());
-		while (ss >> value)
-			vertices[i].push_back(value);
-	       	++i;
-	}
-}
 
 int main(int argc, char **argv) {
 
@@ -96,7 +97,18 @@ int main(int argc, char **argv) {
 
 //  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);	
+
+	if (parser.loadXML("../tests/test_1_5.xml") == XML_SUCCESS) {
+		parser.parseCameraXML();
+		parser.parseModelsXML();
+		for (int i = 0; i < parser.modelos.size();i++) {
+			fstream f;f.open(parser.modelos[i],fstream::in);
+			readVertices(f);
+			f.close();
+		}
+	}
+	
 	
 // enter GLUT's main cycle
 	glutMainLoop();

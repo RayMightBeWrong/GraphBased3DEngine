@@ -1,5 +1,4 @@
 #include "Cone.h"
-
 using namespace Modelos;
 
 Cone::Cone(float r,float h,float sli,float sta) {
@@ -31,7 +30,7 @@ void Cone::saveModel(std::ofstream &file) {
             float z3 = xy2 * cos(sliceAngle); float z4 = xy2 * cos(sliceAngle2);
 
 			writeV(file,x1,y,z1);
-			writeV(file,x2,y,x2);
+			writeV(file,x2,y,z2);
 			writeV(file,x4,y2,z4);
 
 			writeV(file,x4,y2,z4);
@@ -54,5 +53,3 @@ void Cone::saveModel(std::ofstream &file) {
 
 	}
 }
-
-

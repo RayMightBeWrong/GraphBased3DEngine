@@ -1,7 +1,7 @@
 #include "Cubo.h"
 using namespace Modelos;
 
-Cubo::Cubo(int tam,float sub){
+Cubo::Cubo(float tam,float sub){
 	tamanho = tam;
 	subDivisions = sub;
 }

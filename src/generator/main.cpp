@@ -24,15 +24,15 @@ Modelo *m;
 int handleInput(int argc, char **argv){
 	if (argc == 5){
 		if(!strcmp(argv[1], "box")){
-			int tamanho;
-			sscanf(argv[2], "%d", &tamanho);
+			float tamanho;
+			sscanf(argv[2], "%f", &tamanho);
 			float subDivisoes;
 			sscanf(argv[3], "%f", &subDivisoes);
 			m = new Cubo(tamanho,subDivisoes);
 		}
 		else if (!strcmp(argv[1], "plane")){
-			int tamanho;
-			sscanf(argv[2], "%d", &tamanho);
+			float tamanho;
+			sscanf(argv[2], "%f", &tamanho);
 			float subDivisoes;
 			sscanf(argv[3], "%f", &subDivisoes);
 			m = new Plano(tamanho,subDivisoes);
@@ -65,10 +65,12 @@ int handleInput(int argc, char **argv){
 	return 1;
 }
 
+
+
 int main(int argc, char **argv) {
-	if(handleInput(argc, argv) == 1){
+	if (handleInput(argc,argv) == 1) {
 		m->saveModel(file);
-  		file.close();
+		file.close();
 	}
 	return 1;
 }

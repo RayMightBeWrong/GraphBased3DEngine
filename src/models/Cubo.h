@@ -7,9 +7,9 @@ namespace Modelos
 {
     class Cubo : public Modelo {
     public:
-        int tamanho;
+        float tamanho;
         float subDivisions;
-        Cubo(int tam,float sub);
+        Cubo(float tam,float sub);
 		void saveModel(std::ofstream &file);
     private:
         void savePlaneTXY(float z,std::ofstream &file);
