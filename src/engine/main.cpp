@@ -1,6 +1,7 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
+#include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
@@ -16,7 +17,11 @@
 using namespace std;
 using namespace tinyxml2;
 
-vector<vector<float>> vertices;
+int verticeCount = 0;
+unsigned int indexCount = 0;
+vector<float> vertices;
+vector<unsigned int> indexes;
+GLuint verts, indcs, vCount = 0;
 XMLParser parser;
 
 void changeSize(int w, int h) {
@@ -43,25 +48,54 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
-
-void drawReadVertices(){
-	for(int i = 0; i < vertices.size(); i++)
-		glVertex3f(vertices[i][0], vertices[i][1], vertices[i][2]);
-}
-
-
-void readVertices(fstream& myFile){
+void readVertices(fstream& myFile, int verticeCount){
 	string line;
-	while (getline(myFile, line)){
+	for(int i = 0; i < verticeCount && getline(myFile, line); i++){
 		float value;
 		stringstream ss(line);
-		vector<float> coords;
 		while (ss >> value) {
-			coords.push_back(value);
+			vertices.push_back(value);
 		}
-		vertices.push_back(coords);
 	}
 }
+
+void readIndexes(fstream& myFile){
+	string line;
+	unsigned int value;
+	getline(myFile, line);
+	stringstream ss(line);
+	while (ss >> value) {
+		indexes.push_back(value);
+	}
+}
+
+void prepareData(fstream& myFile){
+	// preencher o vector com as coordenadas dos pontos
+	string line;
+	getline(myFile, line);
+	stringstream ss(line);
+	ss >> verticeCount;
+	readVertices(myFile, verticeCount);
+	readIndexes(myFile);
+	
+	printf("Total de Índices: %ld\n", indexes.size());
+	printf("Total de Vértices: %d\n", verticeCount);
+
+	// criar o VBO
+	glGenBuffers(1, &verts);
+	glGenBuffers(2, &indcs);
+
+	// copiar o vector para a memória gráfica
+	glBindBuffer(GL_ARRAY_BUFFER, verts);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indcs);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 
+			sizeof(unsigned int) * indexes.size(), 
+			indexes.data(), GL_STATIC_DRAW);
+	indexCount = indexes.size();
+}
+
 
 void renderScene(void) {
 	// clear buffers
@@ -73,9 +107,13 @@ void renderScene(void) {
 		      parser.camLX,parser.camLY,parser.camLZ,
 			  parser.camUX,parser.camUY,parser.camUZ);
 	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-	glBegin(GL_TRIANGLES);
-	drawReadVertices();
-	glEnd();
+
+	glBindBuffer(GL_ARRAY_BUFFER, verts);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indcs);
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+
 
 	// End of frame
 	glutSwapBuffers();
@@ -90,10 +128,18 @@ int main(int argc, char **argv) {
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(800,800);
 	glutCreateWindow("CG@ENGINE");
+	glEnableClientState(GL_VERTEX_ARRAY);
+
 		
 // Required callback registry 
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
+
+
+    // init GLEW
+#ifndef __APPLE__
+    glewInit();
+#endif
 
 //  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
@@ -106,7 +152,7 @@ int main(int argc, char **argv) {
 				for (int i = 0; i < parser.modelos.size() && sucess;i++) {
 					fstream f;f.open(parser.modelos[i],fstream::in);
 					if (!f.fail()) {
-						readVertices(f);
+						prepareData(f);
 						f.close();
 					}
 					else sucess = false;

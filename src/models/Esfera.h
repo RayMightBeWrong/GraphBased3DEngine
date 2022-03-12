@@ -8,26 +8,23 @@
 
 namespace Modelos
 {
-    class Vertice
+class Esfera : public Modelo 
 {
-public:
-    Vertice();
-    Vertice(float x,float y,float z);
-
-    float x;
-    float y;
-    float z;
-    
-};
-
-class Esfera : public Modelo {
-
 public:
     int raio;
     int slices;
     int stacks;
     Esfera(int r,int sli,int sta);
 	void saveModel(std::ofstream &file);
+
+private:
+    std::vector<float> vertices;
+    std::vector<unsigned int> indexes;
+    void buildEsfera();
+    void addVertex(std::vector<float> &vertexs, 
+						std::vector<unsigned int> &indexes, 
+							float x, float y, float z);
+    int vertexInVector(std::vector<float> &vertexs, float x, float y, float z);
 };
 }
 

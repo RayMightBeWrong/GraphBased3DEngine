@@ -9,11 +9,15 @@ namespace Modelos
 public:
     float tamanho;
     float subDivisions;
-
     Plano(float l,float sub);
     void saveModel(std::ofstream &file);
+
 private:
-    void savePlaneTXZ(float y,std::ofstream &file);
+    std::vector<float> vertices;
+    std::vector<unsigned int> indexes;
+    void buildPlaneTXZ(float y);
+    void addVertex(std::vector<float> &vertexs, std::vector<unsigned int> &indexes, float x, float y, float z);
+    int vertexInVector(std::vector<float> &vertexs, float x, float y, float z);
 };
 }
 
