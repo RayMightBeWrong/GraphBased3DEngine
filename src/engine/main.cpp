@@ -85,15 +85,14 @@ void prepareData(fstream& myFile){
 	readIndexes(myFile);
 }
 
-void prepareData2(){
+void createVBOs(){
 	// criar os VBOs
 	verts = (GLuint *) malloc(sizeof(GLuint) * nrModelos);
 	indcs = (GLuint *) malloc(sizeof(GLuint) * nrModelos);
 	for(int i = 0; i < nrModelos; i++){
-		glGenBuffers(i*2 + 1, &verts[i]);
-		glGenBuffers(i*2 + 2, &indcs[i]);
+		glGenBuffers(1, &verts[i]);
+		glGenBuffers(1, &indcs[i]);
 	}
-
 
 	// copiar o vector para a memória gráfica
 	for(int i = 0; i < nrModelos; i++){
@@ -102,8 +101,8 @@ void prepareData2(){
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indcs[i]);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 
-				sizeof(unsigned int) * indexes[i].size(), 
-				indexes[i].data(), GL_STATIC_DRAW);
+					sizeof(unsigned int) * indexes[i].size(), 
+					indexes[i].data(), GL_STATIC_DRAW);
 	}
 }
 
@@ -120,7 +119,6 @@ void renderScene(void) {
 	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 
 	for(int i = 0; i < nrModelos; i++){
-		printf("iter %d\n", i);
 		glBindBuffer(GL_ARRAY_BUFFER, verts[i]);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 
@@ -171,7 +169,7 @@ int main(int argc, char **argv) {
 					}
 					else sucess = false;
 				}
-				prepareData2();
+				createVBOs();
 			}
 			if (sucess) glutMainLoop();
 			else {

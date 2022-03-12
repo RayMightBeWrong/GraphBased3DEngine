@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include "../models/Modelo.h"
+#include "../models/Cilindro.h"
 #include "../models/Esfera.h"
 #include "../models/Cubo.h"
 #include "../models/Plano.h"
@@ -39,14 +40,25 @@ int handleInput(int argc, char **argv){
 		}
 		file.open(argv[4]);
 	}
-	else if (argc == 6 && !strcmp(argv[1], "sphere")){
-		int raio;
-		sscanf(argv[2], "%d", &raio);
-		int slices;
-		sscanf(argv[3], "%d", &slices);
-		int stacks;
-		sscanf(argv[4], "%d", &stacks);
-		m = new Esfera(raio,slices,stacks);
+	else if (argc == 6){
+		if(!strcmp(argv[1], "sphere")){
+			int raio;
+			sscanf(argv[2], "%d", &raio);
+			int slices;
+			sscanf(argv[3], "%d", &slices);
+			int stacks;
+			sscanf(argv[4], "%d", &stacks);
+			m = new Esfera(raio,slices,stacks);
+		}
+		else if (!strcmp(argv[1], "cylinder")){
+			int raio;
+			sscanf(argv[2], "%d", &raio);
+			int altura;
+			sscanf(argv[3], "%d", &altura);
+			int slices;
+			sscanf(argv[4], "%d", &slices);
+			m = new Cilindro(raio,altura,slices);
+		}
 		file.open(argv[5]);
 	}
 	else if (argc == 7 && !strcmp(argv[1], "cone")){
