@@ -16,6 +16,7 @@
 #include "../models/Cubo.h"
 #include "../models/Plano.h"
 #include "../models/Cone.h"
+#include "../models/Torus.h"
 using namespace Modelos;
 using namespace std;
 
@@ -61,17 +62,32 @@ int handleInput(int argc, char **argv){
 		}
 		file.open(argv[5]);
 	}
-	else if (argc == 7 && !strcmp(argv[1], "cone")){
+	else if (argc == 7){
+		if(!strcmp(argv[1], "cone")){
+			int raio;
+			sscanf(argv[2], "%d", &raio);
+			int altura;
+			sscanf(argv[3], "%d", &altura);
+			int slices;
+			sscanf(argv[4], "%d", &slices);
+			int stacks;
+			sscanf(argv[5], "%d", &stacks);
+			m = new Cone(raio,altura,slices,stacks);
+		}
+		else if (!strcmp(argv[1], "torus")){
+			int raio;
+			sscanf(argv[2], "%d", &raio);
+			int dist;
+			sscanf(argv[3], "%d", &dist);
+			int rings;
+			sscanf(argv[5], "%d", &rings);
+			int slices;
+			sscanf(argv[5], "%d", &slices);
+
+			m = new Torus(raio,dist,rings,slices);
+		}
 		file.open(argv[6]);
-		int raio;
-		sscanf(argv[2], "%d", &raio);
-		int altura;
-		sscanf(argv[3], "%d", &altura);
-		int slices;
-		sscanf(argv[4], "%d", &slices);
-		int stacks;
-		sscanf(argv[5], "%d", &stacks);
-		m = new Cone(raio,altura,slices,stacks);
+
 	}
 	else return 0;
 	return 1;
