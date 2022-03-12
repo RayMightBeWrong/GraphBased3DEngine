@@ -17,11 +17,11 @@
 using namespace std;
 using namespace tinyxml2;
 
-int verticeCount = 0;
-unsigned int indexCount = 0;
-vector<float> vertices;
-vector<unsigned int> indexes;
-GLuint verts, indcs, vCount = 0;
+int nrModelos = 0;
+vector<int> verticeCount;
+vector<vector<float>> vertices;
+vector<vector<unsigned int>> indexes;
+GLuint *verts, *indcs;
 XMLParser parser;
 
 void changeSize(int w, int h) {
@@ -50,23 +50,27 @@ void changeSize(int w, int h) {
 
 void readVertices(fstream& myFile, int verticeCount){
 	string line;
+	vector<float> vs;
 	for(int i = 0; i < verticeCount && getline(myFile, line); i++){
 		float value;
 		stringstream ss(line);
 		while (ss >> value) {
-			vertices.push_back(value);
+			vs.push_back(value);
 		}
 	}
+	vertices.push_back(vs);
 }
 
 void readIndexes(fstream& myFile){
 	string line;
 	unsigned int value;
+	vector<unsigned int> ids;
 	getline(myFile, line);
 	stringstream ss(line);
 	while (ss >> value) {
-		indexes.push_back(value);
+		ids.push_back(value);
 	}
+	indexes.push_back(ids);
 }
 
 void prepareData(fstream& myFile){
@@ -74,26 +78,33 @@ void prepareData(fstream& myFile){
 	string line;
 	getline(myFile, line);
 	stringstream ss(line);
-	ss >> verticeCount;
-	readVertices(myFile, verticeCount);
+	int value;
+	ss >> value;
+	verticeCount.push_back(value);
+	readVertices(myFile, value);
 	readIndexes(myFile);
-	
-	printf("Total de Índices: %ld\n", indexes.size());
-	printf("Total de Vértices: %d\n", verticeCount);
+}
 
-	// criar o VBO
-	glGenBuffers(1, &verts);
-	glGenBuffers(2, &indcs);
+void prepareData2(){
+	// criar os VBOs
+	verts = (GLuint *) malloc(sizeof(GLuint) * nrModelos);
+	indcs = (GLuint *) malloc(sizeof(GLuint) * nrModelos);
+	for(int i = 0; i < nrModelos; i++){
+		glGenBuffers(i*2 + 1, &verts[i]);
+		glGenBuffers(i*2 + 2, &indcs[i]);
+	}
+
 
 	// copiar o vector para a memória gráfica
-	glBindBuffer(GL_ARRAY_BUFFER, verts);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+	for(int i = 0; i < nrModelos; i++){
+		glBindBuffer(GL_ARRAY_BUFFER, verts[i]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices[i].size(), vertices[i].data(), GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indcs);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 
-			sizeof(unsigned int) * indexes.size(), 
-			indexes.data(), GL_STATIC_DRAW);
-	indexCount = indexes.size();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indcs[i]);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 
+				sizeof(unsigned int) * indexes[i].size(), 
+				indexes[i].data(), GL_STATIC_DRAW);
+	}
 }
 
 
@@ -108,12 +119,14 @@ void renderScene(void) {
 			  parser.camUX,parser.camUY,parser.camUZ);
 	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 
-	glBindBuffer(GL_ARRAY_BUFFER, verts);
-	glVertexPointer(3, GL_FLOAT, 0, 0);
+	for(int i = 0; i < nrModelos; i++){
+		printf("iter %d\n", i);
+		glBindBuffer(GL_ARRAY_BUFFER, verts[i]);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indcs);
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
-
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indcs[i]);
+		glDrawElements(GL_TRIANGLES, indexes[i].size(), GL_UNSIGNED_INT, 0);
+	}
 
 	// End of frame
 	glutSwapBuffers();
@@ -149,6 +162,7 @@ int main(int argc, char **argv) {
 		if (parser.loadXML(argv[1]) == XML_SUCCESS) {
 			bool sucess = parser.parse();
 			if (sucess) {
+				nrModelos = parser.modelos.size();
 				for (int i = 0; i < parser.modelos.size() && sucess;i++) {
 					fstream f;f.open(parser.modelos[i],fstream::in);
 					if (!f.fail()) {
@@ -157,6 +171,7 @@ int main(int argc, char **argv) {
 					}
 					else sucess = false;
 				}
+				prepareData2();
 			}
 			if (sucess) glutMainLoop();
 			else {
