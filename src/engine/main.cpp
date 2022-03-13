@@ -24,6 +24,14 @@ vector<vector<unsigned int>> indexes;
 GLuint *verts, *indcs;
 XMLParser parser;
 
+float camPX, camPY, camPZ;
+
+void loadCamera(){
+	camPX = parser.camPX;
+	camPY = parser.camPY;
+	camPZ = parser.camPZ;
+}
+
 void changeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
 	// (you cant make a window with zero width).
@@ -113,11 +121,12 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(parser.camPX,parser.camPY,parser.camPZ, 
+	gluLookAt(camPX, camPY, camPZ,
 		      parser.camLX,parser.camLY,parser.camLZ,
 			  parser.camUX,parser.camUY,parser.camUZ);
-	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+	
 
+	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 	for(int i = 0; i < nrModelos; i++){
 		glBindBuffer(GL_ARRAY_BUFFER, verts[i]);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
@@ -129,6 +138,18 @@ void renderScene(void) {
 	// End of frame
 	glutSwapBuffers();
 }
+
+void processKeys(unsigned char key, int xx, int yy){
+	switch(key){
+		case 27: // ESCAPE
+			exit(0); break;
+	}
+	glutPostRedisplay();
+}
+
+//void processSpecialKeys(int key, int xx, int yy){
+//	glutPostRedisplay();
+//}
 
 
 int main(int argc, char **argv) {
@@ -145,6 +166,10 @@ int main(int argc, char **argv) {
 // Required callback registry 
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
+
+// Callback registration for keyboard processing
+	glutKeyboardFunc(processKeys);
+	//glutSpecialFunc(processSpecialKeys);
 
 
     // init GLEW
@@ -171,7 +196,10 @@ int main(int argc, char **argv) {
 				}
 				createVBOs();
 			}
-			if (sucess) glutMainLoop();
+			if (sucess){
+				loadCamera();
+				glutMainLoop();
+			}
 			else {
 				std::cout << "Erro no parsing do ficheiro de configuracao" << std::endl;
 			}
