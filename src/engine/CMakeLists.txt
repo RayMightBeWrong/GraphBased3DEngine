@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.5)
 # Project Name
 PROJECT(engine)
 
-set(SOURCES parserXML/tinyxml2.cpp parserXML/tinyxml2.h XMLDocReader.cpp XMLDocReader.h)
+set(SOURCES parserXML/tinyxml2.cpp parserXML/tinyxml2.h XMLDocReader.cpp XMLDocReader.h Transformacao/Transformacao.h 
+Transformacao/Escala.cpp Transformacao/Escala.h Transformacao/Translacao.cpp Transformacao/Translacao.h Transformacao/Rotacao.cpp Transformacao/Rotacao.h Camara.cpp Camara.h Grupo.cpp Grupo.h)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_executable(${PROJECT_NAME} main.cpp ${SOURCES})

@@ -4,22 +4,26 @@
 #include "parserXML/tinyxml2.h"
 #include <vector>
 #include <string>
+#include "Grupo.h"
+#include "Camara.h"
+
 using namespace tinyxml2;
+
 class XMLParser {
     public:
         XMLParser();
         XMLDocument doc;
-        float camPX,camPY,camPZ;
-        float camLX,camLY,camLZ;
-        float camUX,camUY,camUZ;
-        float projFOV,projNEAR,projFAR;
-        std::vector<std::string> modelos;
+        Camara camara;
+        Grupo grupo;
 
         XMLError loadXML(std::string file);
         bool parse();
     private:    
-        bool parseCameraXML();
-        bool parseModelsXML();
+        bool parseCameraXML(XMLNode* camera);
+        Grupo parseGroupXML(XMLNode* group);
+        std::vector<Transformacao*> getTransformations(XMLNode* transforms);
+        std::vector<std::string> getModelos(XMLNode* parent);
+        std::vector<GLuint> getModelIndex(XMLNode* models) ;
 };
 
 #endif

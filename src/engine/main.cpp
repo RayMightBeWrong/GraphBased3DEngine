@@ -24,13 +24,6 @@ vector<vector<unsigned int>> indexes;
 GLuint *verts, *indcs;
 XMLParser parser;
 
-float camPX, camPY, camPZ;
-
-void loadCamera(){
-	camPX = parser.camPX;
-	camPY = parser.camPY;
-	camPZ = parser.camPZ;
-}
 
 void changeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
@@ -50,7 +43,7 @@ void changeSize(int w, int h) {
 	glViewport(0, 0, w, h);
 
 	// Set perspective
-	gluPerspective(parser.projFOV ,ratio, parser.projNEAR ,parser.projFAR);
+	gluPerspective(parser.camara.projFOV ,ratio, parser.camara.projNEAR ,parser.camara.projFAR);
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
@@ -81,16 +74,21 @@ void readIndexes(fstream& myFile){
 	indexes.push_back(ids);
 }
 
-void prepareData(fstream& myFile){
-	// preencher o vector com as coordenadas dos pontos
-	string line;
-	getline(myFile, line);
-	stringstream ss(line);
-	int value;
-	ss >> value;
-	verticeCount.push_back(value);
-	readVertices(myFile, value);
-	readIndexes(myFile);
+void axis () {
+	glBegin(GL_LINES);
+	// X axis in red
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(-100.0f, 0.0f, 0.0f);
+	glVertex3f( 100.0f, 0.0f, 0.0f);
+	// Y Axis in Green
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.0f, -100.0f, 0.0f);
+	glVertex3f(0.0f, 100.0f, 0.0f);
+	// Z Axis in Blue
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, -100.0f);
+	glVertex3f(0.0f, 0.0f, 100.0f);
+	glEnd();
 }
 
 void createVBOs(){
@@ -114,6 +112,42 @@ void createVBOs(){
 	}
 }
 
+void prepareData(Grupo g) {
+	for (int i = 0; i < g.modelos.size();i++) {
+		fstream f;f.open(g.modelos[i],fstream::in);
+		string line;
+		getline(f, line);
+		stringstream ss(line);
+		int value;
+		ss >> value;
+		verticeCount.push_back(value);
+		readVertices(f, value);
+		readIndexes(f);
+		nrModelos++;
+	}
+	for (int i  = 0; i < g.subgrupos.size();i++) {
+		prepareData(g.subgrupos[i]);
+	}
+}
+
+void desenhaGrupo(Grupo g) {
+	glPushMatrix();
+	for (int i = 0; i < g.transformacoes.size();i++) {
+		g.transformacoes[i]->apply();
+	}
+	for (int i = 0; i < g.modelsIndex.size();i++) {
+		glBindBuffer(GL_ARRAY_BUFFER, verts[g.modelsIndex[i]]);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indcs[g.modelsIndex[i]]);
+		glDrawElements(GL_TRIANGLES, indexes[g.modelsIndex[i]].size(), GL_UNSIGNED_INT, 0);
+	}
+
+	for (int i = 0; i < g.subgrupos.size(); i++) {
+		desenhaGrupo(g.subgrupos[i]);
+	}
+	glPopMatrix();
+}
 
 void renderScene(void) {
 	// clear buffers
@@ -121,19 +155,12 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(camPX, camPY, camPZ,
-		      parser.camLX,parser.camLY,parser.camLZ,
-			  parser.camUX,parser.camUY,parser.camUZ);
+	gluLookAt(parser.camara.camPX, parser.camara.camPY, parser.camara.camPZ,
+		      parser.camara.camLX,parser.camara.camLY,parser.camara.camLZ,
+			  parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ);
 	
-
-	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-	for(int i = 0; i < nrModelos; i++){
-		glBindBuffer(GL_ARRAY_BUFFER, verts[i]);
-		glVertexPointer(3, GL_FLOAT, 0, 0);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indcs[i]);
-		glDrawElements(GL_TRIANGLES, indexes[i].size(), GL_UNSIGNED_INT, 0);
-	}
+	axis();
+	desenhaGrupo(parser.grupo);
 
 	// End of frame
 	glutSwapBuffers();
@@ -151,7 +178,6 @@ void processKeys(unsigned char key, int xx, int yy){
 //	glutPostRedisplay();
 //}
 
-
 int main(int argc, char **argv) {
 
 // init GLUT and the window
@@ -160,7 +186,6 @@ int main(int argc, char **argv) {
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(800,800);
 	glutCreateWindow("CG@ENGINE");
-	glEnableClientState(GL_VERTEX_ARRAY);
 
 		
 // Required callback registry 
@@ -178,26 +203,19 @@ int main(int argc, char **argv) {
 #endif
 
 //  OpenGL settings
+	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);	
-
+	glEnable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 	if (argc == 2) {
 		if (parser.loadXML(argv[1]) == XML_SUCCESS) {
 			bool sucess = parser.parse();
 			if (sucess) {
-				nrModelos = parser.modelos.size();
-				for (int i = 0; i < parser.modelos.size() && sucess;i++) {
-					fstream f;f.open(parser.modelos[i],fstream::in);
-					if (!f.fail()) {
-						prepareData(f);
-						f.close();
-					}
-					else sucess = false;
-				}
+				prepareData(parser.grupo);
 				createVBOs();
-			}
-			if (sucess){
-				loadCamera();
+				std::cout << parser.camara.projFOV << std::endl;
+				std::cout << parser.camara.projNEAR << std::endl;
+				std::cout << parser.camara.projFAR << std::endl;
 				glutMainLoop();
 			}
 			else {
