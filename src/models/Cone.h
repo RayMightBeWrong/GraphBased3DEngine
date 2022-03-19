@@ -20,8 +20,6 @@ namespace Modelos
     std::vector<float> vertices;
     std::vector<unsigned int> indexes;
     void buildCone();
-    void addVertex(std::vector<float> &vertexs, std::vector<unsigned int> &indexes, float x, float y, float z);
-    int vertexInVector(std::vector<float> &vertexs, float x, float y, float z);
 };
 
 }

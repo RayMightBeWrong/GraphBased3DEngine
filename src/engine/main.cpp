@@ -213,9 +213,6 @@ int main(int argc, char **argv) {
 			if (sucess) {
 				prepareData(parser.grupo);
 				createVBOs();
-				std::cout << parser.camara.projFOV << std::endl;
-				std::cout << parser.camara.projNEAR << std::endl;
-				std::cout << parser.camara.projFAR << std::endl;
 				glutMainLoop();
 			}
 			else {
