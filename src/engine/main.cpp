@@ -12,7 +12,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include "XMLDocReader.h"
+#include "parserXML/XMLDocReader.h"
 #include "parserXML/tinyxml2.h"
 using namespace std;
 using namespace tinyxml2;
