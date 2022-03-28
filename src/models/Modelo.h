@@ -2,6 +2,8 @@
 #define MODELO_H
 #include <fstream>
 #include <vector>
+#include <string>
+#include <iostream>
 
 namespace Modelos
 {
@@ -9,6 +11,7 @@ namespace Modelos
 {
     public:
     virtual void saveModel(std::ofstream &file) = 0;
+    virtual void printSucess(std::string) = 0;
     static void writeFile(std::ofstream& myFile, 
 						std::vector<float> &vertexs, 
 						std::vector<unsigned int> &indexes);

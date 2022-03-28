@@ -15,6 +15,7 @@ namespace Modelos
         float height;
         Cone(float r,float st,float sl,float h);
         void saveModel(std::ofstream &file);
+        void printSucess(std::string file);
 
     private:
     std::vector<float> vertices;

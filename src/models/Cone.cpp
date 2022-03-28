@@ -60,3 +60,7 @@ void Cone::buildCone(){
         }
     }
 }
+
+void Cone::printSucess(std::string file){
+	std::cout << "Cone gerada com sucesso no ficheiro: " << file << std::endl;
+}

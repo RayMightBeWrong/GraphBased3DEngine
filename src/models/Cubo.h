@@ -11,6 +11,7 @@ namespace Modelos
         float subDivisions;
         Cubo(float tam,float sub);
 		void saveModel(std::ofstream &file);
+        void printSucess(std::string file);
 
     private:
         std::vector<float> vertices;

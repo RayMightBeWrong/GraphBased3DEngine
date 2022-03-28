@@ -53,3 +53,7 @@ void Cilindro::buildCilindro(){
 		index +=2;
 	}
 }
+
+void Cilindro::printSucess(std::string file){
+	std::cout << "Cilindro gerada com sucesso no ficheiro: " << file << std::endl;
+}

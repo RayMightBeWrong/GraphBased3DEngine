@@ -143,3 +143,7 @@ int Cubo::vertexInVector(std::vector<float> &vertexs, float x, float y, float z)
 
         return r;
 }
+
+void Cubo::printSucess(std::string file){
+	std::cout << "Cubo gerada com sucesso no ficheiro: " << file << std::endl;
+}
