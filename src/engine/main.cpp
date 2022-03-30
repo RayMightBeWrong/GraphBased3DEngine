@@ -74,23 +74,6 @@ void readIndexes(fstream& myFile){
 	indexes.push_back(ids);
 }
 
-void axis () {
-	glBegin(GL_LINES);
-	// X axis in red
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-100.0f, 0.0f, 0.0f);
-	glVertex3f( 100.0f, 0.0f, 0.0f);
-	// Y Axis in Green
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, -100.0f, 0.0f);
-	glVertex3f(0.0f, 100.0f, 0.0f);
-	// Z Axis in Blue
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -100.0f);
-	glVertex3f(0.0f, 0.0f, 100.0f);
-	glEnd();
-}
-
 void createVBOs(){
 	// criar os VBOs
 	verts = (GLuint *) malloc(sizeof(GLuint) * nrModelos);
@@ -112,9 +95,10 @@ void createVBOs(){
 	}
 }
 
-void prepareData(Grupo g) {
+bool prepareData(Grupo g) {
 	for (int i = 0; i < g.modelos.size();i++) {
 		fstream f;f.open(g.modelos[i],fstream::in);
+		if (f.fail()) return false;
 		string line;
 		getline(f, line);
 		stringstream ss(line);
@@ -126,8 +110,9 @@ void prepareData(Grupo g) {
 		nrModelos++;
 	}
 	for (int i  = 0; i < g.subgrupos.size();i++) {
-		prepareData(g.subgrupos[i]);
+		if (!prepareData(g.subgrupos[i])) return false;
 	}
+	return true;
 }
 
 void desenhaGrupo(Grupo g) {
@@ -159,7 +144,6 @@ void renderScene(void) {
 		      parser.camara.camLX,parser.camara.camLY,parser.camara.camLZ,
 			  parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ);
 	
-	axis();
 	desenhaGrupo(parser.grupo);
 
 	// End of frame
@@ -211,9 +195,11 @@ int main(int argc, char **argv) {
 		if (parser.loadXML(argv[1]) == XML_SUCCESS) {
 			bool sucess = parser.parse();
 			if (sucess) {
-				prepareData(parser.grupo);
-				createVBOs();
-				glutMainLoop();
+				if (prepareData(parser.grupo)) {
+					createVBOs();
+					glutMainLoop();
+				}
+				else std::cout << "Erro nos modelos pedidos para desenhar no cenário" << std::endl;
 			}
 			else {
 				std::cout << "Erro no parsing do ficheiro de configuracao" << std::endl;
