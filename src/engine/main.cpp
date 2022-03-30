@@ -26,6 +26,9 @@ GLuint *verts, *indcs;
 XMLParser parser;
 unordered_map<string, int> filesIndex;
 
+float beta, alfa, radius;
+float px, py, pz;
+
 void changeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
 	// (you cant make a window with zero width).
@@ -75,6 +78,21 @@ void readIndexes(fstream& myFile){
 	indexes.push_back(ids);
 }
 
+void initCamera(){
+	radius = sqrt(pow(parser.camara.camPX, 2) + pow(parser.camara.camPY, 2) + pow(parser.camara.camPZ, 2));
+	alfa = atan(parser.camara.camPZ / parser.camara.camPX);
+	beta = atan((sqrt(pow(parser.camara.camPX, 2) + pow(parser.camara.camPZ, 2))) / parser.camara.camPY);
+	px = radius * cos(beta) * sin(alfa);
+	py = radius * sin(beta);
+	pz = radius * cos(beta) * cos(alfa);
+}
+
+void updateCamera(){
+	px = radius * cos(beta) * sin(alfa);
+	py = radius * sin(beta);
+	pz = radius * cos(beta) * cos(alfa);
+}
+
 void createVBOs(){
 	// criar os VBOs
 	verts = (GLuint *) malloc(sizeof(GLuint) * nrModelos);
@@ -83,6 +101,7 @@ void createVBOs(){
 		glGenBuffers(1, &verts[i]);
 		glGenBuffers(1, &indcs[i]);
 	}
+
 	// copiar o vector para a memória gráfica
 	for(int i = 0; i < nrModelos; i++){
 		glBindBuffer(GL_ARRAY_BUFFER, verts[i]);
@@ -149,26 +168,55 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(parser.camara.camPX, parser.camara.camPY, parser.camara.camPZ,
+	gluLookAt(px, py, pz,
 		      parser.camara.camLX,parser.camara.camLY,parser.camara.camLZ,
 			  parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ);
 	
 	desenhaGrupo(parser.grupo);
+
 	// End of frame
 	glutSwapBuffers();
 }
 
 void processKeys(unsigned char key, int xx, int yy){
 	switch(key){
+		case 115: // 'w'
+			radius += 0.2; break;
+
+		case 119: // 's'
+			if (radius > 1.0)
+				radius -= 0.2; 
+			break;
+
 		case 27: // ESCAPE
 			exit(0); break;
 	}
+	updateCamera();
 	glutPostRedisplay();
 }
 
-//void processSpecialKeys(int key, int xx, int yy){
-//	glutPostRedisplay();
-//}
+void processSpecialKeys(int key, int xx, int yy){
+	switch(key){
+		case GLUT_KEY_RIGHT:
+			alfa -= 0.1; break;
+
+		case GLUT_KEY_LEFT:
+			alfa += 0.1; break;
+
+		case GLUT_KEY_UP:
+			if (beta <= 1.5f)
+				beta += 0.1f;
+			break;
+
+		case GLUT_KEY_DOWN:
+			if (beta >= -1.5f)
+				beta -= 0.1f;
+			break;
+	}
+
+	updateCamera();
+	glutPostRedisplay();
+}
 
 int main(int argc, char **argv) {
 
@@ -186,7 +234,7 @@ int main(int argc, char **argv) {
 
 // Callback registration for keyboard processing
 	glutKeyboardFunc(processKeys);
-	//glutSpecialFunc(processSpecialKeys);
+	glutSpecialFunc(processSpecialKeys);
 
 
     // init GLEW
@@ -205,6 +253,7 @@ int main(int argc, char **argv) {
 			if (sucess) {
 				if (prepareData(&parser.grupo)) {
 					createVBOs();
+					initCamera();
 					glutMainLoop();
 				}
 				else std::cout << "Erro nos modelos pedidos para desenhar no cenário" << std::endl;
