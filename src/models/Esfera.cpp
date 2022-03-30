@@ -15,53 +15,59 @@ void Esfera::saveModel(std::ofstream &file) {
 
 void Esfera::buildEsfera(){
 	float sliceStep = 2 * M_PI / slices;
-    float stackStep = M_PI / stacks;
+    float stackStep = M_PI/stacks;
+	vertices.push_back(0);vertices.push_back(raio);vertices.push_back(0);
+	vertices.push_back(0);vertices.push_back(-raio);vertices.push_back(0);
 
-	this->vertices.push_back(0);this->vertices.push_back(raio);this->vertices.push_back(0);
-	this->vertices.push_back(0);this->vertices.push_back(-raio);this->vertices.push_back(0);
-	unsigned int index = 2,indexstackAnterior = 2 ;
-	for (int i = 0; i < stacks; i++)
-	{
-		float stackAngle2 = M_PI_2 - (i + 1) * stackStep;
-		float xy2 = raio * cos(stackAngle2);
-		float y2 = raio * sin(stackAngle2);
+	int index = 2;
+    for (int i = 1; i <= stacks;i++) {
+		float stackAngle = M_PI_2 - i * stackStep;
+        float xy = raio * cos(stackAngle);
+        float y = raio * sin(stackAngle);
 
-		float sliceAngle = 0;
-		float x3 = xy2 * sin(sliceAngle);
-		float z3 = xy2 * cos(sliceAngle);
-		vertices.push_back(x3);vertices.push_back(y2);vertices.push_back(z3);
+		int indexStackAnterior;
+		if (i != 1) {
+			indexStackAnterior = index - slices - 1;
+		}
+		vertices.push_back(0);vertices.push_back(y);vertices.push_back(xy);
 		index++;
-		
-		for (int j = 0; j < slices; j++){
-			float sliceAngle2 = (j+1) * sliceStep;
+        for (int j = 1;j <= slices;j++) {
+			float alphaAngle = j * sliceStep;
+			float x = xy * sin(alphaAngle);
+			float z = xy * cos(alphaAngle);
+			if (i == 1) {
+				vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
 
-			float x4 = xy2 * sin(sliceAngle2);
-			float z4 = xy2 * cos(sliceAngle2);
-			
-			if (i == 0) {
-				vertices.push_back(x4);vertices.push_back(y2);vertices.push_back(z4);
 				indexes.push_back(0);
 				indexes.push_back(index-1);
 				indexes.push_back(index);
-				index ++;
+				index++;
 			}
-			else if (i == stacks-1){
-				indexes.push_back(indexstackAnterior + 1);
-				indexes.push_back(indexstackAnterior);
+			else if (i == stacks) {
+				vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
 				indexes.push_back(1);
-				indexstackAnterior++;
+				indexes.push_back(indexStackAnterior+1);
+				indexes.push_back(indexStackAnterior);
+				indexStackAnterior++;
 			}
 			else {
-				indexes.push_back(indexstackAnterior + 1);
-				indexes.push_back(indexstackAnterior);
+				vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
+
+				indexes.push_back(indexStackAnterior + 1);
+				indexes.push_back(indexStackAnterior);
 				indexes.push_back(index-1);
 
-				vertices.push_back(x4);vertices.push_back(y2);vertices.push_back(z4);
-				indexes.push_back(index-1);
+				indexes.push_back(index - 1);
 				indexes.push_back(index);
-				indexes.push_back(indexstackAnterior + 1);
-				indexstackAnterior++;
+				indexes.push_back(indexStackAnterior + 1);
+				
+				indexStackAnterior++;
+				index++;
 			}
-		}
-	}
+        }
+    }
+}
+
+void Esfera::printSucess(std::string file){
+	std::cout << "Esfera gerada com sucesso no ficheiro: " << file << std::endl;
 }

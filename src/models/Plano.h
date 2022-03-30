@@ -11,6 +11,7 @@ public:
     float subDivisions;
     Plano(float l,float sub);
     void saveModel(std::ofstream &file);
+    void printSucess(std::string file);
 
 private:
     std::vector<float> vertices;

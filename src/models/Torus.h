@@ -14,6 +14,7 @@ namespace Modelos
         int slices;
         Torus(float r,float dist,int rs,int sl);
         void saveModel(std::ofstream &file);
+        void printSucess(std::string file);
 
     private:
         std::vector<float> vertices;

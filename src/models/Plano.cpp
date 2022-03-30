@@ -58,3 +58,7 @@ int Plano::vertexInVector(std::vector<float> &vertexs, float x, float y, float z
 
         return r;
 }
+
+void Plano::printSucess(std::string file){
+	std::cout << "Plano gerada com sucesso no ficheiro: " << file << std::endl;
+}

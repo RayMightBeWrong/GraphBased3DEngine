@@ -12,6 +12,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <unordered_map>
 #include "parserXML/XMLDocReader.h"
 #include "parserXML/tinyxml2.h"
 using namespace std;
@@ -23,7 +24,7 @@ vector<vector<float>> vertices;
 vector<vector<unsigned int>> indexes;
 GLuint *verts, *indcs;
 XMLParser parser;
-
+unordered_map<string, int> filesIndex;
 
 void changeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
@@ -82,7 +83,6 @@ void createVBOs(){
 		glGenBuffers(1, &verts[i]);
 		glGenBuffers(1, &indcs[i]);
 	}
-
 	// copiar o vector para a memória gráfica
 	for(int i = 0; i < nrModelos; i++){
 		glBindBuffer(GL_ARRAY_BUFFER, verts[i]);
@@ -95,22 +95,31 @@ void createVBOs(){
 	}
 }
 
-bool prepareData(Grupo g) {
-	for (int i = 0; i < g.modelos.size();i++) {
-		fstream f;f.open(g.modelos[i],fstream::in);
+bool prepareData(Grupo *g) {
+	g->modelsIndex.reserve(g->modelos.size());
+	for (int i = 0; i < g->modelos.size();i++) {
+		fstream f;f.open(g->modelos[i],fstream::in);
 		if (f.fail()) return false;
-		string line;
-		getline(f, line);
-		stringstream ss(line);
-		int value;
-		ss >> value;
-		verticeCount.push_back(value);
-		readVertices(f, value);
-		readIndexes(f);
-		nrModelos++;
+		
+		if (filesIndex.find(g->modelos[i]) == filesIndex.end()) {
+			filesIndex[g->modelos[i]] = nrModelos;
+			g->modelsIndex.push_back(nrModelos);
+			string line;
+			getline(f, line);
+			stringstream ss(line);
+			int value;
+			ss >> value;
+			verticeCount.push_back(value);
+			readVertices(f, value);
+			readIndexes(f);
+			nrModelos++;
+		}
+		else {
+			g->modelsIndex.push_back(filesIndex.at(g->modelos[i]));
+		}
 	}
-	for (int i  = 0; i < g.subgrupos.size();i++) {
-		if (!prepareData(g.subgrupos[i])) return false;
+	for (int i  = 0; i < g->subgrupos.size();i++) {
+		if (!prepareData(&(g->subgrupos[i]))) return false;
 	}
 	return true;
 }
@@ -145,7 +154,6 @@ void renderScene(void) {
 			  parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ);
 	
 	desenhaGrupo(parser.grupo);
-
 	// End of frame
 	glutSwapBuffers();
 }
@@ -195,7 +203,7 @@ int main(int argc, char **argv) {
 		if (parser.loadXML(argv[1]) == XML_SUCCESS) {
 			bool sucess = parser.parse();
 			if (sucess) {
-				if (prepareData(parser.grupo)) {
+				if (prepareData(&parser.grupo)) {
 					createVBOs();
 					glutMainLoop();
 				}

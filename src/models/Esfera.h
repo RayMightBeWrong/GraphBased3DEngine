@@ -16,6 +16,7 @@ public:
     int stacks;
     Esfera(int r,int sli,int sta);
 	void saveModel(std::ofstream &file);
+    void printSucess(std::string file);
 
 private:
     std::vector<float> vertices;

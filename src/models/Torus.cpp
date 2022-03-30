@@ -83,3 +83,7 @@ int Torus::vertexInVector(std::vector<float> &vertexs, float x, float y, float z
 
         return r;
 }
+
+void Torus::printSucess(std::string file){
+	std::cout << "Torus gerada com sucesso no ficheiro: " << file << std::endl;
+}

@@ -21,6 +21,7 @@ using namespace Modelos;
 using namespace std;
 
 ofstream file;
+string filename;
 Modelo *m;
 
 int handleInput(int argc, char **argv){
@@ -40,6 +41,7 @@ int handleInput(int argc, char **argv){
 			m = new Plano(tamanho,subDivisoes);
 		}
 		file.open(argv[4]);
+		filename = argv[4];
 	}
 	else if (argc == 6){
 		if(!strcmp(argv[1], "sphere")){
@@ -61,6 +63,7 @@ int handleInput(int argc, char **argv){
 			m = new Cilindro(raio,altura,slices);
 		}
 		file.open(argv[5]);
+		filename = argv[5];
 	}
 	else if (argc == 7){
 		if(!strcmp(argv[1], "cone")){
@@ -87,7 +90,7 @@ int handleInput(int argc, char **argv){
 			m = new Torus(raio,dist,rings,slices);
 		}
 		file.open(argv[6]);
-
+		filename = argv[6];
 	}
 	else return 0;
 	return 1;
@@ -98,6 +101,7 @@ int handleInput(int argc, char **argv){
 int main(int argc, char **argv) {
 	if (handleInput(argc,argv) == 1) {
 		m->saveModel(file);
+		m->printSucess(filename);
 		file.close();
 	}
 	return 1;

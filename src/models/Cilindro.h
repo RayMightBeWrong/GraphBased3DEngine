@@ -14,6 +14,7 @@ namespace Modelos
         float slices;
         Cilindro(float r,float h,float sl);
         void saveModel(std::ofstream &file);
+        void printSucess(std::string file);
 
     private:
     std::vector<float> vertices;
