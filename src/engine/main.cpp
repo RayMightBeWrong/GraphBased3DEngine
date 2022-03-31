@@ -12,7 +12,8 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include "XMLDocReader.h"
+#include <unordered_map>
+#include "parserXML/XMLDocReader.h"
 #include "parserXML/tinyxml2.h"
 using namespace std;
 using namespace tinyxml2;
@@ -23,7 +24,10 @@ vector<vector<float>> vertices;
 vector<vector<unsigned int>> indexes;
 GLuint *verts, *indcs;
 XMLParser parser;
+unordered_map<string, int> filesIndex;
 
+float beta, alfa, radius;
+float px, py, pz;
 
 void changeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
@@ -74,21 +78,19 @@ void readIndexes(fstream& myFile){
 	indexes.push_back(ids);
 }
 
-void axis () {
-	glBegin(GL_LINES);
-	// X axis in red
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-100.0f, 0.0f, 0.0f);
-	glVertex3f( 100.0f, 0.0f, 0.0f);
-	// Y Axis in Green
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, -100.0f, 0.0f);
-	glVertex3f(0.0f, 100.0f, 0.0f);
-	// Z Axis in Blue
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -100.0f);
-	glVertex3f(0.0f, 0.0f, 100.0f);
-	glEnd();
+void initCamera(){
+	radius = sqrt(pow(parser.camara.camPX, 2) + pow(parser.camara.camPY, 2) + pow(parser.camara.camPZ, 2));
+	alfa = atan(parser.camara.camPZ / parser.camara.camPX);
+	beta = atan((sqrt(pow(parser.camara.camPX, 2) + pow(parser.camara.camPZ, 2))) / parser.camara.camPY);
+	px = radius * cos(beta) * sin(alfa);
+	py = radius * sin(beta);
+	pz = radius * cos(beta) * cos(alfa);
+}
+
+void updateCamera(){
+	px = radius * cos(beta) * sin(alfa);
+	py = radius * sin(beta);
+	pz = radius * cos(beta) * cos(alfa);
 }
 
 void createVBOs(){
@@ -112,22 +114,33 @@ void createVBOs(){
 	}
 }
 
-void prepareData(Grupo g) {
-	for (int i = 0; i < g.modelos.size();i++) {
-		fstream f;f.open(g.modelos[i],fstream::in);
-		string line;
-		getline(f, line);
-		stringstream ss(line);
-		int value;
-		ss >> value;
-		verticeCount.push_back(value);
-		readVertices(f, value);
-		readIndexes(f);
-		nrModelos++;
+bool prepareData(Grupo *g) {
+	g->modelsIndex.reserve(g->modelos.size());
+	for (int i = 0; i < g->modelos.size();i++) {
+		fstream f;f.open(g->modelos[i],fstream::in);
+		if (f.fail()) return false;
+		
+		if (filesIndex.find(g->modelos[i]) == filesIndex.end()) {
+			filesIndex[g->modelos[i]] = nrModelos;
+			g->modelsIndex.push_back(nrModelos);
+			string line;
+			getline(f, line);
+			stringstream ss(line);
+			int value;
+			ss >> value;
+			verticeCount.push_back(value);
+			readVertices(f, value);
+			readIndexes(f);
+			nrModelos++;
+		}
+		else {
+			g->modelsIndex.push_back(filesIndex.at(g->modelos[i]));
+		}
 	}
-	for (int i  = 0; i < g.subgrupos.size();i++) {
-		prepareData(g.subgrupos[i]);
+	for (int i  = 0; i < g->subgrupos.size();i++) {
+		if (!prepareData(&(g->subgrupos[i]))) return false;
 	}
+	return true;
 }
 
 void desenhaGrupo(Grupo g) {
@@ -155,11 +168,10 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(parser.camara.camPX, parser.camara.camPY, parser.camara.camPZ,
+	gluLookAt(px, py, pz,
 		      parser.camara.camLX,parser.camara.camLY,parser.camara.camLZ,
 			  parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ);
 	
-	axis();
 	desenhaGrupo(parser.grupo);
 
 	// End of frame
@@ -168,15 +180,43 @@ void renderScene(void) {
 
 void processKeys(unsigned char key, int xx, int yy){
 	switch(key){
+		case 115: // 'w'
+			radius += 0.2; break;
+
+		case 119: // 's'
+			if (radius > 1.0)
+				radius -= 0.2; 
+			break;
+
 		case 27: // ESCAPE
 			exit(0); break;
 	}
+	updateCamera();
 	glutPostRedisplay();
 }
 
-//void processSpecialKeys(int key, int xx, int yy){
-//	glutPostRedisplay();
-//}
+void processSpecialKeys(int key, int xx, int yy){
+	switch(key){
+		case GLUT_KEY_RIGHT:
+			alfa -= 0.1; break;
+
+		case GLUT_KEY_LEFT:
+			alfa += 0.1; break;
+
+		case GLUT_KEY_UP:
+			if (beta <= 1.5f)
+				beta += 0.1f;
+			break;
+
+		case GLUT_KEY_DOWN:
+			if (beta >= -1.5f)
+				beta -= 0.1f;
+			break;
+	}
+
+	updateCamera();
+	glutPostRedisplay();
+}
 
 int main(int argc, char **argv) {
 
@@ -194,7 +234,7 @@ int main(int argc, char **argv) {
 
 // Callback registration for keyboard processing
 	glutKeyboardFunc(processKeys);
-	//glutSpecialFunc(processSpecialKeys);
+	glutSpecialFunc(processSpecialKeys);
 
 
     // init GLEW
@@ -211,9 +251,12 @@ int main(int argc, char **argv) {
 		if (parser.loadXML(argv[1]) == XML_SUCCESS) {
 			bool sucess = parser.parse();
 			if (sucess) {
-				prepareData(parser.grupo);
-				createVBOs();
-				glutMainLoop();
+				if (prepareData(&parser.grupo)) {
+					createVBOs();
+					initCamera();
+					glutMainLoop();
+				}
+				else std::cout << "Erro nos modelos pedidos para desenhar no cenário" << std::endl;
 			}
 			else {
 				std::cout << "Erro no parsing do ficheiro de configuracao" << std::endl;

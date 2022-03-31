@@ -1,6 +1,5 @@
 #include <vector>
 #include <string>
-#include "Transformacao/Transformacao.h"
 #include "Grupo.h"
 
 void Grupo::aplicarTransformacoes() {

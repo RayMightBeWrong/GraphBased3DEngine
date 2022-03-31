@@ -3,7 +3,6 @@
 using namespace tinyxml2;
 using namespace std;
 
-GLuint nrModelo = 0;
 
 XMLParser::XMLParser() {};
 
@@ -104,8 +103,6 @@ vector<GLuint> XMLParser::getModelIndex(XMLNode* models) {
 	vector<GLuint> index;
 	XMLElement* model = models->FirstChildElement("model");
 	while (model != nullptr) {
-		index.push_back(nrModelo);
-		nrModelo++;
 		model = model->NextSiblingElement("model");
 	}
 	return index;

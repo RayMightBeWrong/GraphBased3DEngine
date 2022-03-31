@@ -2,10 +2,10 @@
 #define GRUPO_H
 #include <vector>
 #include <string>
-#include "Transformacao/Transformacao.h"
-#include "Transformacao/Translacao.h"
-#include "Transformacao/Rotacao.h"
-#include "Transformacao/Escala.h"
+#include "../Transformacao/Transformacao.h"
+#include "../Transformacao/Translacao.h"
+#include "../Transformacao/Rotacao.h"
+#include "../Transformacao/Escala.h"
 
 class Grupo {
     public:

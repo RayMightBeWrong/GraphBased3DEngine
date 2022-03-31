@@ -1,7 +1,7 @@
 #ifndef XMLREADER_H
 #define XMLREADER_H
 #include <fstream>
-#include "parserXML/tinyxml2.h"
+#include "tinyxml2.h"
 #include <vector>
 #include <string>
 #include "Grupo.h"
