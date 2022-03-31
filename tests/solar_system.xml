@@ -1,0 +1,110 @@
+<world> 
+    <camera> 
+	    <position x="10" y="3" z="10" />
+	    <lookAt x="0" y="0" z="0" />
+	    <up x="0" y="1" z="0" />
+        <projection fov="60" near="1" far="2000" /> 
+    </camera>
+
+	<group>
+         <!-- Sol -->
+        <models> 
+            <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+        </models>
+        <transform> 
+            <translate x="0" y="1" z="0" />
+        </transform>
+        <group> 
+            <!-- Mercurio -->
+            <transform> 
+                <rotate angle="45" x="0" y ="1" z = "0" />
+                <translate x="3.5" y="0" z="0" />
+            </transform>
+			<models> 
+				<model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+			</models>
+            <group> 
+                <!-- Venus -->
+                <transform> 
+                    <translate x="3.5" y="0" z="0" />
+                    <rotate angle="90" x="0" y ="1" z = "0" />
+                    <translate x="3" y="0" z="0" />
+                    <rotate angle="-90" x="0" y ="1" z = "0" />
+                    
+                </transform>
+                <models> 
+                    <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+                </models>
+                <group> 
+                    <!-- Terra -->
+                    <transform> 
+                        <translate x="3.5" y="0" z="0" />
+                        <rotate angle="90" x="0" y ="1" z = "0" />
+                        <translate x="5" y="0" z="0" />
+                        <rotate angle="-90" x="0" y ="1" z = "0" />
+                    </transform>
+                    <models> 
+                        <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+                    </models>
+                    <group> 
+                        <!-- Marte -->
+                        <transform> 
+                            <translate x="3.5" y="0" z="0" />
+                            <rotate angle="-90" x="0" y ="1" z = "0" />
+                            <translate x="15" y="0" z="0" />
+                            <rotate angle="90" x="0" y ="1" z = "0" />
+                        </transform>
+                        <models> 
+                            <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+                        </models>
+                        <group> 
+                            <!-- jupiter -->
+                            <transform> 
+                                <translate x="3.5" y="0" z="0" />
+                                <rotate angle="-90" x="0" y ="1" z = "0" />
+                                <translate x="2" y="0" z="0" />
+                                <rotate angle="90" x="0" y ="1" z = "0" />
+                            </transform>
+                            <models> 
+                                <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+                            </models>
+                            <group> 
+                                <!-- Saturno -->
+                                <transform> 
+                                    <translate x="3.5" y="0" z="0" />
+                                    <rotate angle="130" x="0" y ="1" z = "0" />
+                                    <translate x="40" y="0" z="0" />
+                                    <rotate angle="-130" x="0" y ="1" z = "0" />
+                                </transform>
+                                <models> 
+                                    <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+                                </models>
+                                <group> 
+                                    <!-- Urano -->
+                                    <transform> 
+                                        <rotate angle="230" x="0" y ="1" z = "0" />
+                                        <translate x="20" y="0" z="0" />
+                                        <rotate angle="-230" x="0" y ="1" z = "0" />
+                                    </transform>
+                                    <models> 
+                                        <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+                                    </models>
+                                    <group> 
+                                        <!-- Neptuno -->
+                                        <transform> 
+                                            <rotate angle="230" x="0" y ="1" z = "0" />
+                                            <translate x="14" y="0" z="0" />
+                                        </transform>
+                                        <models> 
+                                            <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+                                        </models>
+                                    </group>
+                                </group>
+                            </group>
+                        </group>
+                    </group>
+                </group>            
+            </group>
+	    </group>
+    </group>
+</world>
