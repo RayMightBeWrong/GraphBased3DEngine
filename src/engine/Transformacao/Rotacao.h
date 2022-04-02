@@ -10,7 +10,6 @@ class Rotacao : public Transformacao {
         float z;
         Rotacao(float deg,float x1,float y1,float z1);
         void apply();
-        void print();
 };
 
 #endif

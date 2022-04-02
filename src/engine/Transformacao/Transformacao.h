@@ -7,6 +7,5 @@
 class Transformacao {
     public:
         virtual void apply() = 0;
-        virtual void print() = 0;
 };
 #endif

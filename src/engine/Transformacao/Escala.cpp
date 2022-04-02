@@ -9,7 +9,3 @@ Escala::Escala(float x1,float y1,float z1) {
 void Escala::apply() {
     glScalef(x,y,z);
 }
-
-void Escala::print() {
-    std::cout << x << y << z << std::endl;
-}

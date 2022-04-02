@@ -13,8 +13,6 @@ class Grupo {
         std::vector<std::string> modelos;
         std::vector<Grupo> subgrupos;
         std::vector<GLuint> modelsIndex;
-    private:
-        void aplicarTransformacoes();
 };
 
 #endif

@@ -10,7 +10,3 @@ Rotacao::Rotacao(float deg,float x1,float y1,float z1) {
 void Rotacao::apply() {
     glRotatef(angulo,x,y,z);
 }
-
-void Rotacao::print() {
-    std::cout << angulo << x << y << z << std::endl;
-}

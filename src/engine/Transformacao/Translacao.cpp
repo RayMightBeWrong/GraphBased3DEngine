@@ -9,7 +9,3 @@ Translacao::Translacao(float x1,float y1,float z1){
 void Translacao::apply() {
     glTranslatef(x,y,z);
 }
-
-void Translacao::print() {
-    std::cout << x << y << z << std::endl;
-}
