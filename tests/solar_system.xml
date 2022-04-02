@@ -1,110 +1,641 @@
 <world> 
     <camera> 
-	    <position x="20" y="10" z="5" />
+	    <position x="400" y="10" z="400" />
 	    <lookAt x="0" y="0" z="0" />
 	    <up x="0" y="1" z="0" />
         <projection fov="60" near="1" far="2000" /> 
     </camera>
 
 	<group>
-         <!-- Sol -->
-        <models> 
-            <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
-        </models>
-        <transform> 
-            <translate x="0" y="1" z="0" />
-        </transform>
-        <group> 
-            <!-- Mercurio -->
+
+        <!-- Sol -->
+    	<group>
+            <models> 
+                <model file="sphere2.3d" /> <!-- generator sphere 1 40 40 sphere2.3d -->
+            </models>
             <transform> 
-                <rotate angle="45" x="0" y ="1" z = "0" />
-                <translate x="3.5" y="0" z="0" />
+                <scale x="60" y="60" z="60" />
             </transform>
-			<models> 
-				<model file="box.3d" /> <!-- generator box 2 3 box.3d -->
-			</models>
-            <group> 
-                <!-- Venus -->
-                <transform> 
-                    <translate x="3.5" y="0" z="0" />
-                    <rotate angle="90" x="0" y ="1" z = "0" />
-                    <translate x="3" y="0" z="0" />
-                    <rotate angle="-90" x="0" y ="1" z = "0" />
-                    
-                </transform>
+        </group>
+
+        <!-- Planetas-->
+    	<group>
+
+            <!-- Mercúrio -->
+            <group>
                 <models> 
-                    <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
+                    <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
                 </models>
-                <group> 
-                    <!-- Terra -->
-                    <transform> 
-                        <translate x="3.5" y="0" z="0" />
-                        <rotate angle="90" x="0" y ="1" z = "0" />
-                        <translate x="5" y="0" z="0" />
-                        <rotate angle="-90" x="0" y ="1" z = "0" />
-                    </transform>
-                    <models> 
-                        <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
-                    </models>
-                    <group> 
-                        <!-- Marte -->
-                        <transform> 
-                            <translate x="3.5" y="0" z="0" />
-                            <rotate angle="-90" x="0" y ="1" z = "0" />
-                            <translate x="15" y="0" z="0" />
-                            <rotate angle="90" x="0" y ="1" z = "0" />
-                        </transform>
-                        <models> 
-                            <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
-                        </models>
-                        <group> 
-                            <!-- jupiter -->
-                            <transform> 
-                                <translate x="3.5" y="0" z="0" />
-                                <rotate angle="-90" x="0" y ="1" z = "0" />
-                                <translate x="2" y="0" z="0" />
-                                <rotate angle="90" x="0" y ="1" z = "0" />
-                            </transform>
-                            <models> 
-                                <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
-                            </models>
-                            <group> 
-                                <!-- Saturno -->
-                                <transform> 
-                                    <translate x="3.5" y="0" z="0" />
-                                    <rotate angle="130" x="0" y ="1" z = "0" />
-                                    <translate x="40" y="0" z="0" />
-                                    <rotate angle="-130" x="0" y ="1" z = "0" />
-                                </transform>
-                                <models> 
-                                    <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
-                                </models>
-                                <group> 
-                                    <!-- Urano -->
-                                    <transform> 
-                                        <rotate angle="230" x="0" y ="1" z = "0" />
-                                        <translate x="20" y="0" z="0" />
-                                        <rotate angle="-230" x="0" y ="1" z = "0" />
-                                    </transform>
-                                    <models> 
-                                        <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
-                                    </models>
-                                    <group> 
-                                        <!-- Neptuno -->
-                                        <transform> 
-                                            <rotate angle="230" x="0" y ="1" z = "0" />
-                                            <translate x="14" y="0" z="0" />
-                                        </transform>
-                                        <models> 
-                                            <model file="box.3d" /> <!-- generator box 2 3 box.3d -->
-                                        </models>
-                                    </group>
-                                </group>
-                            </group>
-                        </group>
-                    </group>
-                </group>            
+                <transform> 
+                    <translate x="-120" y="0" z="0" />
+                    <scale x="0.38" y="0.38" z="0.38" />
+                </transform>
             </group>
-	    </group>
+
+            <!-- Vénus -->
+            <group>
+                <models> 
+                    <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                </models>
+                <transform> 
+                    <translate x="130" y="0" z="0" />
+                    <rotate angle="90" x="1" y ="0" z = "0" />
+                    <scale x="0.95" y="0.95" z="0.95" />
+                </transform>
+            </group>
+
+            <!-- Terra -->
+            <group>
+                <transform> 
+                        <translate x="0" y="0" z="-140" />
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                    </models>
+                </group>
+
+                <!-- Lua (#T1) -->
+                <group>
+                    <models> 
+                        <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                    </models>
+                    <transform> 
+                        <translate x="0" y="0" z="4" />
+                        <scale x="0.27" y="0.27" z="0.27" />
+                    </transform>
+                </group>
+            </group>
+
+            <!-- Marte -->
+            <group>
+                <models> 
+                    <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                </models>
+                <transform> 
+                    <translate x="0" y="0" z="150" />
+                    <scale x="0.53" y="0.53" z="0.53" />
+                </transform>
+
+                <!-- luas de Marte (2) -->
+                <group>
+
+                    <!-- Fobos (#M1) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="0" y="0" z="4" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- Deimos (#M2) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="0" y="0" z="-4" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                </group>
+            </group>
+
+            <!-- Júpiter -->
+            <group>
+                <models> 
+                    <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                </models>
+                <transform> 
+                    <translate x="-57" y="0" z="171" />
+                    <scale x="11" y="11" z="11" />
+                </transform>
+            </group>
+
+            <!-- Saturno -->
+            <group>
+                <transform> 
+                    <translate x="66" y="0" z="-198" />
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                    </models>
+
+                    <transform> 
+                        <scale x="9.15" y="9.15" z="9.15" />
+                    </transform>
+                </group>
+
+                <!-- anel de Saturno -->
+                <group>
+                    <models> 
+                        <model file="torus.3d" /> <!-- generator torus 1.5 13 64 32 torus.3d -->
+                    </models>
+                </group>
+            </group>
+
+            <!-- Urano -->
+            <group>
+                <transform> 
+                    <translate x="-225" y="0" z="-75" />
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                    </models>
+                    <transform> 
+                        <scale x="4" y="4" z="4" />
+                    </transform>
+                </group>
+
+                <!-- luas de Urano (27) -->
+                <group>
+
+                    <!-- #U1 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="0" y="0" z="10" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U2 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="2.3" y="0" z="9.73" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U3 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="4.5" y="0" z="8.95" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U4 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="6.4" y="0" z="7.65" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U5 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="8" y="0" z="5.95" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U6 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="9.2" y="0" z="3.95" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U7 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="9.85" y="0" z="1.75" />
+                            <scale x="0.06" y="0.06" z="0.06" />
+                        </transform>
+                    </group>
+
+                    <!-- #U8 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="9.98" y="0" z="-0.58" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U9 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="9.55" y="0" z="-2.85" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U10 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="8.65" y="0" z="-5" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U11 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="7.25" y="0" z="-6.85" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U12 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="5.5" y="0" z="-8.35" />
+                            <scale x="0.06" y="0.06" z="0.06" />
+                        </transform>
+                    </group>
+
+                    <!-- #U13 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="3.40" y="0" z="-9.4" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U14 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="1.15" y="0" z="-9.9" />
+                            <scale x="0.07" y="0.07" z="0.07" />
+                        </transform>
+                    </group>
+
+                    <!-- #U15 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-1.15" y="0" z="-9.9" />
+                            <scale x="0.18" y="0.18" z="0.18" />
+                        </transform>
+                    </group>
+
+                    <!-- #U16 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-3.4" y="0" z="-9.4" />
+                            <scale x="0.18" y="0.18" z="0.18" />
+                        </transform>
+                    </group>
+
+                    <!-- #U17 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-5.5" y="0" z="-8.35" />
+                            <scale x="0.24" y="0.24" z="0.24" />
+                        </transform>
+                    </group>
+
+                    <!-- #U18 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-7.25" y="0" z="-6.85" />
+                            <scale x="0.24" y="0.24" z="0.24" />
+                        </transform>
+                    </group>
+
+                    <!-- #U19 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-8.65" y="0" z="-5" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U20 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-9.55" y="0" z="-2.85" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U21 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-9.98" y="0" z="-0.5" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U22 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-9.85" y="0" z="1.75" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U23 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-9.2" y="0" z="3.95" />
+                            <scale x="0.06" y="0.06" z="0.06" />
+                        </transform>
+                    </group>
+
+                    <!-- #U24 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-8" y="0" z="5.95" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U25 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-6.40" y="0" z="7.65" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U26 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-4.5" y="0" z="8.95" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- #U27 -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-2.3" y="0" z="9.75" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                </group> 
+            </group>
+
+            <!-- Neptuno -->
+            <group>
+                <transform> 
+                    <translate x="246" y="0" z="82" />
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                    </models>
+                    <transform> 
+                        <scale x="3.8" y="3.8" z="3.8" />
+                    </transform>
+                </group>
+
+
+                <!-- luas de Neptuno (14) -->
+                <group>
+
+                    <!-- Naiad (#N1) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="0" y="0" z="9" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- Thalassa (#N2) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="0" y="0" z="-9" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- Despina (#N3) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="3.90" y="0" z="8.1" />
+                            <scale x="0.06" y="0.06" z="0.06" />
+                        </transform>
+                    </group>
+
+                    <!-- Galatea (#N4) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="7" y="0" z="5.6" />
+                            <scale x="0.06" y="0.06" z="0.06" />
+                        </transform>
+                    </group>
+
+                    <!-- Larissa (#N5) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="8.7" y="0" z="2" />
+                            <scale x="0.06" y="0.06" z="0.06" />
+                        </transform>
+                    </group>
+
+                    <!-- Hippocamp (#N6) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="8.7" y="0" z="-2" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- Proteus (#N7) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="7" y="0" z="-5.6" />
+                            <scale x="0.07" y="0.07" z="0.07" />
+                        </transform>
+                    </group>
+
+                    <!-- Triton (#N8) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="3.9" y="0" z="-8.1" />
+                            <scale x="0.42" y="0.42" z="0.42" />
+                        </transform>
+                    </group>
+
+                    <!-- Nereid (#N9) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-3.9" y="0" z="-8.1" />
+                            <scale x="0.07" y="0.07" z="0.07" />
+                        </transform>
+                    </group>
+
+                    <!-- Halimede (#N10) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-7" y="0" z="-5.6" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- Sao (#N11) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-8.7" y="0" z="-2" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- Laomedeia (#N12) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-8.7" y="0" z="2" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- Psamathe (#N13) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-7" y="0" z="-5.6" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                    <!-- Neso (#N14) -->
+                    <group>
+                        <models> 
+                            <model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->
+                        </models>
+                        <transform> 
+                            <translate x="-3.9" y="0" z="8.1" />
+                            <scale x="0.05" y="0.05" z="0.05" />
+                        </transform>
+                    </group>
+
+                </group>
+
+            </group>
+        </group>
     </group>
+
 </world>

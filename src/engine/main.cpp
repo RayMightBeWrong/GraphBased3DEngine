@@ -82,9 +82,9 @@ void initCamera(){
 	radius = sqrt(pow(parser.camara.camPX, 2) + pow(parser.camara.camPY, 2) + pow(parser.camara.camPZ, 2));
 	alfa = atan(parser.camara.camPZ / parser.camara.camPX);
 	beta = atan((sqrt(pow(parser.camara.camPX, 2) + pow(parser.camara.camPZ, 2))) / parser.camara.camPY);
-	px = radius * cos(beta) * sin(alfa);
-	py = radius * sin(beta);
-	pz = radius * cos(beta) * cos(alfa);
+	px = parser.camara.camPX;
+	py = parser.camara.camPY;
+	pz = parser.camara.camPZ;
 }
 
 void updateCamera(){
@@ -181,11 +181,11 @@ void renderScene(void) {
 void processKeys(unsigned char key, int xx, int yy){
 	switch(key){
 		case 115: // 'w'
-			radius += 0.2; break;
+			radius += 1; break;
 
 		case 119: // 's'
 			if (radius > 1.0)
-				radius -= 0.2; 
+				radius -= 1; 
 			break;
 
 		case 27: // ESCAPE
