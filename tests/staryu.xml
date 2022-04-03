@@ -1,6 +1,6 @@
 <world> 
     <camera> 
-	    <position x="300" y="10" z="300" />
+	    <position x="150" y="10" z="150" />
 	    <lookAt x="0" y="0" z="0" />
 	    <up x="0" y="1" z="0" />
         <projection fov="60" near="1" far="2000" /> 
@@ -82,10 +82,193 @@
                     <rotate angle="90" x="1" y="0" z="0" />
                     <scale x="30" y="30" z="30" />
                 </transform>
-            </group> 
+            </group>
+
+            <group>
+                <transform>
+                    <translate x="30" y="0" z="25"/>
+                    <rotate angle="90" x="1" y="0" z="0" />
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <rotate angle="45" x="0" y="1" z="0" />
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <translate x="10" y="0" z="0"/>
+                        <rotate angle="45" x="0" y="1" z="0" />
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+            </group>
+
+            <group>
+                <transform>
+                    <translate x="-30" y="0" z="25"/>
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <rotate angle="90" x="1" y="0" z="0" />
+                        <rotate angle="45" x="0" y="1" z="0" />
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <translate x="-10" y="0" z="0"/>
+                        <rotate angle="90" x="1" y="0" z="0" />
+                        <rotate angle="45" x="0" y="1" z="0" />
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+            </group>
 
         </group>
+
+        <group>
+                <transform>
+                    <translate x="5" y="25" z="30"/>
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <rotate angle="90" x="1" y="0" z="0"/>
+                        <rotate angle="-45" x="0" y="0" z="1"/>
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <translate x="-8" y="10" z="7"/>
+                        <rotate angle="90" x="1" y="0" z="0"/>
+                        <rotate angle="-45" x="0" y="0" z="1"/>
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+        </group>
+
+        <group>
+                <transform>
+                    <translate x="5" y="-25" z="25"/>
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <rotate angle="90" x="1" y="0" z="0"/>
+                        <rotate angle="-45" x="0" y="0" z="1"/>
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <translate x="-7" y="-10" z="8"/>
+                        <rotate angle="90" x="1" y="0" z="0"/>
+                        <rotate angle="-45" x="0" y="0" z="1"/>
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+        </group>
+
+                <group>
+                <transform>
+                    <translate x="35" y="-35" z="0"/>
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <rotate angle="90" x="1" y="0" z="0"/>
+                        <rotate angle="-45" x="0" y="0" z="1"/>
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <translate x="-8" y="10" z="7"/>
+                        <rotate angle="90" x="1" y="0" z="0"/>
+                        <rotate angle="-45" x="0" y="0" z="1"/>
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+        </group>
+
+        <group>
+                <transform>
+                    <translate x="35" y="35" z="0"/>
+                </transform>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <rotate angle="90" x="1" y="0" z="0"/>
+                        <rotate angle="-45" x="0" y="0" z="1"/>
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+
+                <group>
+                    <models> 
+                        <model file="cylinder.3d" /> <!-- generator cylinder 1 4 10 cylinder.3d -->
+                    </models>
+
+                    <transform>
+                        <translate x="-7" y="-10" z="8"/>
+                        <rotate angle="90" x="1" y="0" z="0"/>
+                        <rotate angle="-45" x="0" y="0" z="1"/>
+                        <scale x="10" y="5" z="10" />
+                    </transform>
+                </group>
+        </group>
     </group>
-
-
 </world>

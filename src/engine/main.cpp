@@ -204,12 +204,12 @@ void processSpecialKeys(int key, int xx, int yy){
 			alfa += 0.1; break;
 
 		case GLUT_KEY_UP:
-			if (beta <= 1.5f)
+			if (beta < 1.45f)
 				beta += 0.1f;
 			break;
 
 		case GLUT_KEY_DOWN:
-			if (beta >= -1.5f)
+			if (beta > -1.45f)
 				beta -= 0.1f;
 			break;
 	}
