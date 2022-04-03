@@ -1,0 +1,91 @@
+<world> 
+    <camera> 
+	    <position x="300" y="10" z="300" />
+	    <lookAt x="0" y="0" z="0" />
+	    <up x="0" y="1" z="0" />
+        <projection fov="60" near="1" far="2000" /> 
+    </camera>
+
+	<group>
+        <group>
+            <transform>
+                <rotate angle="45" x="0" y="1" z="0" />
+            </transform>
+
+        	<group>
+                <models> 
+                    <model file="cone.3d" /> <!-- generator cone 1 2 4 3 cone.3d -->
+                </models>
+                <transform> 
+                    <scale x="60" y="60" z="45" />
+                </transform>
+            </group>
+
+            <group>
+                <models> 
+                    <model file="cone.3d" /> <!-- generator cone 1 2 4 3 cone.3d -->
+                </models>
+                <transform> 
+                    <rotate angle="72" x="0" y="0" z="1" />
+                    <scale x="60" y="60" z="45" />
+                </transform>
+            </group>
+
+            <group>
+                <models> 
+                    <model file="cone.3d" /> <!-- generator cone 1 2 4 3 cone.3d -->
+                </models>
+                <transform> 
+                    <rotate angle="144" x="0" y="0" z="1" />
+                    <scale x="60" y="60" z="45" />
+                </transform>
+            </group>
+
+            <group>
+                <models> 
+                    <model file="cone.3d" /> <!-- generator cone 1 2 4 3 cone.3d -->
+                </models>
+                <transform> 
+                    <rotate angle="-72" x="0" y="0" z="1" />
+                    <scale x="60" y="60" z="45" />
+                </transform>
+            </group>
+
+            <group>
+                <models> 
+                    <model file="cone.3d" /> <!-- generator cone 1 2 4 3 cone.3d -->
+                </models>
+                <transform> 
+                    <rotate angle="-144" x="0" y="0" z="1" />
+                    <scale x="60" y="60" z="45" />
+                </transform>
+            </group>
+
+
+            <group>
+                <models> 
+                    <model file="anel.3d" /> <!-- generator torus 1 2 64 32 anel.3d -->
+                </models>
+                <transform>-
+                    <translate x="0" y="0" z="20"/>
+                    <rotate angle="90" x="1" y="0" z="0" />
+                    <scale x="25" y="25" z="25" />
+                </transform>
+            </group>
+
+            <group>
+                <models> 
+                    <model file="rubi.3d" /> <!-- generator sphere 1 10 10 rubi.3d -->
+                </models>
+                <transform>
+                    <translate x="0" y="0" z="25"/>
+                    <rotate angle="90" x="1" y="0" z="0" />
+                    <scale x="30" y="30" z="30" />
+                </transform>
+            </group> 
+
+        </group>
+    </group>
+
+
+</world>
