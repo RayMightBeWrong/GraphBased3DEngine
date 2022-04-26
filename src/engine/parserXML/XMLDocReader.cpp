@@ -3,6 +3,11 @@
 using namespace tinyxml2;
 using namespace std;
 
+static char toLower(char in) {
+	if (in <= 'Z' && in >= 'A')
+		return in - ('Z' - 'z');
+	return in;
+} 
 
 XMLParser::XMLParser() {};
 
@@ -62,19 +67,72 @@ vector<Transformacao*> XMLParser::getTransformations(XMLNode* transforms) {
 	XMLElement* op = transforms->FirstChildElement();
 	while (op != nullptr) {
 		if (strcmp(op->Value(),"translate") == 0) {
-			float x = stof(op->Attribute("x"));
-			float y = stof(op->Attribute("y"));
-			float z = stof(op->Attribute("z"));
-			Translacao *t = new Translacao(x,y,z) ;
-			transf.push_back(t);
+			const char* x1 = op->Attribute("x");
+			const char* y1 = op->Attribute("y");
+			const char* z1 = op->Attribute("z");
+			const char* timeTest = op->Attribute("time");
+			const char* alignTest = op->Attribute("align");
+
+
+			if (x1 != nullptr && y1 != nullptr && z1 != nullptr) {
+				float x = stof(x1);
+				float y = stof(y1);
+				float z = stof(z1);
+				TranslacaoEstatica *t = new TranslacaoEstatica(x,y,z) ;
+				transf.push_back(t);
+			}
+			else if (timeTest != nullptr && alignTest != nullptr){
+				bool align;
+				std::vector<float> pontosCurva;
+				float time = stof(timeTest);
+				if (regex_match (alignTest,regex("[Tt][rR][uU][Ee]"))) {
+					align = true; 
+				}
+				else {
+					align = false;
+				}
+				XMLElement *nextPonto = op->FirstChildElement("point");
+				while (nextPonto != nullptr) {
+					float xPonto = stof(nextPonto->Attribute("x"));
+					float yPonto = stof(nextPonto->Attribute("y"));
+					float zPonto = stof(nextPonto->Attribute("z"));
+					pontosCurva.push_back(xPonto);
+					pontosCurva.push_back(yPonto);
+					pontosCurva.push_back(zPonto);
+
+					nextPonto = nextPonto->NextSiblingElement("point");
+				}
+
+				TranslacaoTemporizada *t = new TranslacaoTemporizada(time,align,pontosCurva);
+				transf.push_back(t);
+			}
+			else {
+				cerr << "Transformação inválida" << endl;
+				exit(-1);
+			}
 		}
 		if (strcmp(op->Value(),"rotate") == 0) {
-			float angulo = stoi(op->Attribute("angle"));
-			float x = stof(op->Attribute("x"));
-			float y = stof(op->Attribute("y"));
-			float z = stof(op->Attribute("z"));
-			Rotacao *r = new Rotacao(angulo,x,y,z);
-			transf.push_back(r);
+			const char* angleTest = op->Attribute("angle");
+			const char* timeTest = op->Attribute("time");
+
+			if (angleTest != nullptr) {
+				float angle = stof(angleTest);
+				float x1 = stof(op->Attribute("x"));
+				float y1 = stof(op->Attribute("y"));
+				float z1 = stof(op->Attribute("z"));
+
+				RotacaoEstatica *t = new RotacaoEstatica(angle,x1,y1,z1);
+				transf.push_back(t);
+			}
+			else if (timeTest != nullptr) {
+				float time = stof(timeTest);
+				float x1 = stof(op->Attribute("x"));
+				float y1 = stof(op->Attribute("y"));
+				float z1 = stof(op->Attribute("z"));
+
+				RotacaoTemporizada *t = new RotacaoTemporizada(time,x1,y1,z1);
+				transf.push_back(t);
+			}
 		}
 		if (strcmp(op->Value(),"scale") == 0) {
 			float x = stof(op->Attribute("x"));

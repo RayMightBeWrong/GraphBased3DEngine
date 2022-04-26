@@ -6,6 +6,7 @@
 #include <string>
 #include "Grupo.h"
 #include "Camara.h"
+#include <regex>
 
 using namespace tinyxml2;
 

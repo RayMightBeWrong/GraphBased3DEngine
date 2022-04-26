@@ -3,8 +3,10 @@
 #include <vector>
 #include <string>
 #include "../Transformacao/Transformacao.h"
-#include "../Transformacao/Translacao.h"
-#include "../Transformacao/Rotacao.h"
+#include "../Transformacao/TranslacaoEstatica.h"
+#include "../Transformacao/TranslacaoTemporizada.h"
+#include "../Transformacao/RotacaoTemporizada.h"
+#include "../Transformacao/RotacaoEstatica.h"
 #include "../Transformacao/Escala.h"
 
 class Grupo {

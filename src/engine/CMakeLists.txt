@@ -4,7 +4,8 @@ cmake_minimum_required(VERSION 3.5)
 PROJECT(engine)
 
 set(SOURCES parserXML/tinyxml2.cpp parserXML/tinyxml2.h parserXML/XMLDocReader.cpp parserXML/XMLDocReader.h Transformacao/Transformacao.h 
-	Transformacao/Escala.cpp Transformacao/Escala.h Transformacao/Translacao.cpp Transformacao/Translacao.h Transformacao/Rotacao.cpp Transformacao/Rotacao.h 
+	Transformacao/Escala.cpp Transformacao/Escala.h Transformacao/TranslacaoEstatica.cpp Transformacao/TranslacaoEstatica.h Transformacao/RotacaoEstatica.cpp Transformacao/RotacaoEstatica.h
+	Transformacao/TranslacaoTemporizada.cpp Transformacao/TranslacaoTemporizada.h Transformacao/RotacaoTemporizada.cpp Transformacao/RotacaoTemporizada.h 
 	parserXML/Camara.cpp parserXML/Camara.h parserXML/Grupo.cpp parserXML/Grupo.h)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
