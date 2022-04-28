@@ -143,10 +143,10 @@ bool prepareData(Grupo *g) {
 	return true;
 }
 
-void desenhaGrupo(Grupo g) {
+void desenhaGrupo(Grupo g, float time) {
 	glPushMatrix();
 	for (int i = 0; i < g.transformacoes.size();i++) {
-		g.transformacoes[i]->apply();
+		g.transformacoes[i]->apply(time);
 	}
 	for (int i = 0; i < g.modelsIndex.size();i++) {
 		glBindBuffer(GL_ARRAY_BUFFER, verts[g.modelsIndex[i]]);
@@ -157,7 +157,7 @@ void desenhaGrupo(Grupo g) {
 	}
 
 	for (int i = 0; i < g.subgrupos.size(); i++) {
-		desenhaGrupo(g.subgrupos[i]);
+		desenhaGrupo(g.subgrupos[i], time);
 	}
 	glPopMatrix();
 }
@@ -172,7 +172,7 @@ void renderScene(void) {
 		      parser.camara.camLX,parser.camara.camLY,parser.camara.camLZ,
 			  parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ);
 	
-	desenhaGrupo(parser.grupo);
+	desenhaGrupo(parser.grupo, glutGet(GLUT_ELAPSED_TIME) / 1000.f);
 
 	// End of frame
 	glutSwapBuffers();
@@ -230,6 +230,7 @@ int main(int argc, char **argv) {
 		
 // Required callback registry 
 	glutDisplayFunc(renderScene);
+	glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
 // Callback registration for keyboard processing

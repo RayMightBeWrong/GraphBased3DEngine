@@ -7,6 +7,6 @@ RotacaoEstatica::RotacaoEstatica(float deg,float x1,float y1,float z1) {
     angulo = deg;
 }
 
-void RotacaoEstatica::apply() {
+void RotacaoEstatica::apply(float time) {
     glRotatef(angulo,x,y,z);
 }
