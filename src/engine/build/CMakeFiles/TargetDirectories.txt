@@ -1,3 +1,0 @@
-/home/ray/UM/3ANO/2SEM/CG/GraphBased3DEngine/src/engine/build/CMakeFiles/rebuild_cache.dir
-/home/ray/UM/3ANO/2SEM/CG/GraphBased3DEngine/src/engine/build/CMakeFiles/edit_cache.dir
-/home/ray/UM/3ANO/2SEM/CG/GraphBased3DEngine/src/engine/build/CMakeFiles/engine.dir
