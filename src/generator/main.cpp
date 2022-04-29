@@ -18,7 +18,7 @@
 #include "../models/Plano.h"
 #include "../models/Cone.h"
 #include "../models/Torus.h"
-#include "../models/Tesselation.h"
+#include "../models/SuperficieBezier.h"
 
 using namespace Modelos;
 using namespace std;
@@ -95,7 +95,7 @@ int handleInput(int argc, char **argv){
 				float tesselation;
 				sscanf(argv[3],"%f",&tesselation);
 				getPatchInfo(filePatchs);
-				m = new Tesselation(indicesPatches,pontosControlo,tesselation);
+				m = new SuperficieBezier(indicesPatches,pontosControlo,tesselation);
 			}
 
 		}

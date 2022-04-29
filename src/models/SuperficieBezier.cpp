@@ -1,9 +1,9 @@
-#include "Tesselation.h"
+#include "SuperficieBezier.h"
 using namespace Modelos;
 
 
-//Construtor da classe Tesselation
-Tesselation::Tesselation(std::vector<std::vector<int>> indices, std::vector<float> pontos,float tes) {
+//Construtor da classe SuperficieBezier
+SuperficieBezier::SuperficieBezier(std::vector<std::vector<int>> indices, std::vector<float> pontos,float tes) {
     for (int i = 0; i < indices.size();i++) {
         std::vector<int> indicesPatch = indices[i];
         std::vector<float> pontosControloPatch;
@@ -18,7 +18,7 @@ Tesselation::Tesselation(std::vector<std::vector<int>> indices, std::vector<floa
 }
 
 //Função que guarda no file os vertices e indices para desenhar o modelo
-void Tesselation::saveModel(std::ofstream &file) {
+void SuperficieBezier::saveModel(std::ofstream &file) {
     int index = 0;
     // Para cada Patch vamos buscar os seus vertices e indices e acrescentar aos vectores gerais do modelo.
     for (int i = 0;i < patches.size();i++) {
@@ -35,6 +35,6 @@ void Tesselation::saveModel(std::ofstream &file) {
     writeFile(file,this->vertices,this->indexes);
 }
 
-void Tesselation::printSucess(std::string file) {
+void SuperficieBezier::printSucess(std::string file) {
     std::cout << "Modelo com as patches gerado com sucesso" << std::endl;
 }

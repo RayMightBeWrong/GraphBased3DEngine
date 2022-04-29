@@ -8,7 +8,9 @@ class TranslacaoEstatica : public Transformacao {
         float y;
         float z;
         TranslacaoEstatica(float x1,float y1,float z1);
-        void apply();
+        void apply(float time);
+    private:
+        void buildRotMatrix(float *x, float *y, float *z, float *m);
 };
 
 #endif

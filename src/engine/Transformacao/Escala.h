@@ -8,6 +8,6 @@ class Escala : public Transformacao {
         float y;
         float z;
         Escala(float x1,float y1,float z1);
-        void apply();
+        void apply(float time);
 };
 #endif
