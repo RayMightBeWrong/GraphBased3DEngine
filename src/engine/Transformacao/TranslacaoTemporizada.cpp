@@ -6,7 +6,7 @@ TranslacaoTemporizada::TranslacaoTemporizada(float t, bool a, std::vector<float>
     pontosCurva = pontos;
     nr_pontos = (int) pontosCurva.size() / 3;
     prevY = (float*) malloc(sizeof(float) * 3);
-    prevY[0] = 0; prevY[1] = -1; prevY[2] = 0;
+    prevY[0] = 0; prevY[1] = 1; prevY[2] = 0;
 }
 
 void TranslacaoTemporizada::apply(float time) {
