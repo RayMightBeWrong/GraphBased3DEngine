@@ -26,8 +26,9 @@ GLuint *verts, *indcs;
 XMLParser parser;
 unordered_map<string, int> filesIndex;
 
+int startX, startY, tracking = 0;
 float beta, alfa, radius;
-float px, py, pz;
+float px, py, pz, angle;
 
 void changeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
@@ -85,6 +86,7 @@ void initCamera(){
 	px = parser.camara.camPX;
 	py = parser.camara.camPY;
 	pz = parser.camara.camPZ;
+	angle = 0;
 }
 
 void updateCamera(){
@@ -179,44 +181,82 @@ void renderScene(void) {
 }
 
 void processKeys(unsigned char key, int xx, int yy){
+	float radiusX,radiusZ;
+	float temp_x = px - parser.camara.camLX;
+	float temp_y = py - parser.camara.camLY;
+	float temp_z = pz - parser.camara.camLZ;
+	radiusX = temp_y * parser.camara.camUZ - temp_z*parser.camara.camUY;
+	radiusZ = temp_x * parser.camara.camUY - temp_y*parser.camara.camUX;
 	switch(key){
-		case 115: // 'w'
-			radius += 1; break;
-
-		case 119: // 's'
-			if (radius > 1.0)
-				radius -= 1; 
+		case 119: // 'w'
+			px -= 0.1*temp_x;
+			pz -= 0.1*temp_z;
+			parser.camara.camLX -= 0.1*temp_x;
+			parser.camara.camLZ -= 0.1*temp_z;
+			angle = atan(abs(px-parser.camara.camLX)/abs(pz-parser.camara.camLZ));
+			break;
+		case 115: // 's'
+			px += 0.1*temp_x;
+			pz += 0.1*temp_z;
+			parser.camara.camLX += 0.1*temp_x;
+			parser.camara.camLZ += 0.1*temp_z;
+			angle = atan(abs(px-parser.camara.camLX)/abs(pz-parser.camara.camLZ));
+			break;
+		
+		case 100: //'a'
+			px -= 0.1*radiusX;
+			pz -= 0.1*radiusZ;
+			parser.camara.camLX -= 0.1*radiusX;
+			parser.camara.camLZ -= 0.1*radiusZ;
+			angle = atan(abs(px-parser.camara.camLX)/abs(pz-parser.camara.camLZ));
+			break;
+		
+		case 97: //d
+			px += 0.1*radiusX;
+			pz += 0.1*radiusZ;
+			parser.camara.camLX += 0.1*radiusX;
+			parser.camara.camLZ += 0.1*radiusZ;
 			break;
 
 		case 27: // ESCAPE
 			exit(0); break;
 	}
-	updateCamera();
+	//updateCamera();
 	glutPostRedisplay();
 }
 
 void processSpecialKeys(int key, int xx, int yy){
+	float temp_x = px - parser.camara.camLX;
+	float temp_y = py - parser.camara.camLY;
+	float temp_z = pz - parser.camara.camLZ;
+	float radiusX = temp_y * parser.camara.camUZ - temp_z*parser.camara.camUY;
+	float radiusZ = temp_x * parser.camara.camUY - temp_y*parser.camara.camUX;
 	switch(key){
 		case GLUT_KEY_RIGHT:
-			alfa -= 0.1; break;
+			angle -= 15;
+			parser.camara.camLX = px + sin(angle * 3.14 / 180.0); 
+			parser.camara.camLZ = pz + cos(angle * 3.14 / 180.0);
+			break;
 
 		case GLUT_KEY_LEFT:
-			alfa += 0.1; break;
+			angle += 15;
+			parser.camara.camLX = px + sin(angle * 3.14 / 180.0);
+			parser.camara.camLZ = pz + cos(angle * 3.14 / 180.0);
+			break;
 
 		case GLUT_KEY_UP:
-			if (beta < 1.45f)
-				beta += 0.1f;
+			py += 3;
 			break;
 
 		case GLUT_KEY_DOWN:
-			if (beta > -1.45f)
-				beta -= 0.1f;
+			py -= 3;
 			break;
 	}
 
-	updateCamera();
+	//updateCamera();
 	glutPostRedisplay();
 }
+
 
 int main(int argc, char **argv) {
 
