@@ -11,7 +11,8 @@ TranslacaoTemporizada::TranslacaoTemporizada(float t, bool a, std::vector<float>
 
 void TranslacaoTemporizada::apply(float time) {
     float pos[3], deriv[3];
-    renderCatmullRomCurve();
+    if(alinhado)
+        renderCatmullRomCurve();
     float gt = fmod(time, tempo) / tempo;
     getGlobalCatmullRomPoint(gt, pos, deriv);
     glTranslatef(pos[0], pos[1], pos[2]);
