@@ -29,6 +29,7 @@ unordered_map<string, int> filesIndex;
 int startX, startY, tracking = 0;
 float beta, alfa, radius;
 float px, py, pz, angle;
+float temp_x,temp_y,temp_z;
 
 void changeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
@@ -86,6 +87,9 @@ void initCamera(){
 	px = parser.camara.camPX;
 	py = parser.camara.camPY;
 	pz = parser.camara.camPZ;
+	temp_x = px - parser.camara.camLX;
+	temp_y = py - parser.camara.camLY;
+	temp_z = pz - parser.camara.camLZ;
 	angle = 0;
 }
 
@@ -182,38 +186,37 @@ void renderScene(void) {
 
 void processKeys(unsigned char key, int xx, int yy){
 	float radiusX,radiusZ;
-	float temp_x = px - parser.camara.camLX;
-	float temp_y = py - parser.camara.camLY;
-	float temp_z = pz - parser.camara.camLZ;
 	radiusX = temp_y * parser.camara.camUZ - temp_z*parser.camara.camUY;
 	radiusZ = temp_x * parser.camara.camUY - temp_y*parser.camara.camUX;
+	temp_x = px - parser.camara.camLX;
+	temp_y = py - parser.camara.camLY;
+	temp_z = pz - parser.camara.camLZ;
 	switch(key){
 		case 119: // 'w'
-			px -= 0.1*temp_x;
-			pz -= 0.1*temp_z;
+			px -= 4;
+			pz -= 4;
 			parser.camara.camLX -= 0.1*temp_x;
 			parser.camara.camLZ -= 0.1*temp_z;
-			angle = atan(abs(px-parser.camara.camLX)/abs(pz-parser.camara.camLZ));
+			printf("val x = %f\n", px);
+			printf("val z = %f\n", pz);
 			break;
 		case 115: // 's'
-			px += 0.1*temp_x;
-			pz += 0.1*temp_z;
+			px += 4;
+			pz += 4;
 			parser.camara.camLX += 0.1*temp_x;
 			parser.camara.camLZ += 0.1*temp_z;
-			angle = atan(abs(px-parser.camara.camLX)/abs(pz-parser.camara.camLZ));
 			break;
 		
 		case 100: //'a'
-			px -= 0.1*radiusX;
-			pz -= 0.1*radiusZ;
+			px -= 4;
+			pz -= 4;
 			parser.camara.camLX -= 0.1*radiusX;
 			parser.camara.camLZ -= 0.1*radiusZ;
-			angle = atan(abs(px-parser.camara.camLX)/abs(pz-parser.camara.camLZ));
 			break;
 		
 		case 97: //d
-			px += 0.1*radiusX;
-			pz += 0.1*radiusZ;
+			px += 4;
+			pz += 4;
 			parser.camara.camLX += 0.1*radiusX;
 			parser.camara.camLZ += 0.1*radiusZ;
 			break;
@@ -226,30 +229,32 @@ void processKeys(unsigned char key, int xx, int yy){
 }
 
 void processSpecialKeys(int key, int xx, int yy){
-	float temp_x = px - parser.camara.camLX;
-	float temp_y = py - parser.camara.camLY;
-	float temp_z = pz - parser.camara.camLZ;
 	float radiusX = temp_y * parser.camara.camUZ - temp_z*parser.camara.camUY;
 	float radiusZ = temp_x * parser.camara.camUY - temp_y*parser.camara.camUX;
 	switch(key){
 		case GLUT_KEY_RIGHT:
 			angle -= 15;
 			parser.camara.camLX = px + sin(angle * 3.14 / 180.0); 
+			parser.camara.camLY = py;
 			parser.camara.camLZ = pz + cos(angle * 3.14 / 180.0);
+			printf("cx = %f \ncz = %f", parser.camara.camLX,parser.camara.camLZ);
 			break;
 
 		case GLUT_KEY_LEFT:
 			angle += 15;
-			parser.camara.camLX = px + sin(angle * 3.14 / 180.0);
+			parser.camara.camLX = px + sin(angle * 3.14 / 180.0); 
+			parser.camara.camLY = py;
 			parser.camara.camLZ = pz + cos(angle * 3.14 / 180.0);
 			break;
 
 		case GLUT_KEY_UP:
-			py += 3;
+			py += 0.5*temp_y;
+			
 			break;
 
 		case GLUT_KEY_DOWN:
-			py -= 3;
+			py -= 0.5*temp_y;
+			
 			break;
 	}
 
