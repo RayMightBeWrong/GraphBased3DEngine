@@ -15,6 +15,7 @@ public:
 
 private:
     std::vector<float> vertices;
+    std::vector<float> normals;
     std::vector<unsigned int> indexes;
     void buildPlaneTXZ(float y);
     void addVertex(std::vector<float> &vertexs, std::vector<unsigned int> &indexes, float x, float y, float z);

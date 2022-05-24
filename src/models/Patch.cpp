@@ -2,6 +2,22 @@
 
 using namespace Modelos;
 
+void cross(float *a, float *b, float *res) {
+
+	res[0] = a[1]*b[2] - a[2]*b[1];
+	res[1] = a[2]*b[0] - a[0]*b[2];
+	res[2] = a[0]*b[1] - a[1]*b[0];
+}
+
+
+void normalize(float *a) {
+
+	float l = sqrt(a[0]*a[0] + a[1] * a[1] + a[2] * a[2]);
+	a[0] = a[0]/l;
+	a[1] = a[1]/l;
+	a[2] = a[2]/l;
+}
+
 // Funçao que calcula a multiplicação da matriz da curva de bezier com a matrix das coordenadas dos pontos controlo
 void multMatrix1(float m1[4][4],float m2[4][4][3],float res[4][4][3]) {
     for (int i = 0; i < 4;i++) {
@@ -73,6 +89,26 @@ void calculaPonto(float matrixPre[4][4][3],float u,float v,float res[3]) {
     calculaUMatrix(resVMatrix,uVector,res);
 }
 
+void calculaNormal(float matrixPre[4][4][3],float u,float v,float res[3]) {
+    float uVector[4] = {powf(u,3),powf(u,2),u,1};
+    float vVector[4][1] = {{powf(v,3)},{powf(v,2)},{v},{1}};
+    float uDerivVector[4] = {3 * powf(u,2),2 * u,1,0};
+    float vDerivVector[4][1] = {{3 * powf(v,2)},{2 * v},{1},{0}};
+
+    float uNormal[3],vNormal[3];
+    float resVMatrix[4][1][3];
+
+    calculaVMatrix(matrixPre,vVector,resVMatrix);
+    calculaUMatrix(resVMatrix,uDerivVector,uNormal);
+
+    calculaVMatrix(matrixPre,vDerivVector,resVMatrix);
+    calculaUMatrix(resVMatrix,uVector,vNormal);
+
+    cross(vNormal,uNormal,res);
+    normalize(res);
+    
+}
+
 void Patch::preCalcularMatrix(float res[4][4][3]) {
     float matrizBezier[4][4] = {{-1,3,-3,1},
                                 {3,-6,3,0},
@@ -113,30 +149,36 @@ void Patch::buildPatch() {
     for (int i = 0;i < tesselation;i++) {
         for (int j = 0; j < tesselation;j++) {
             float coords1[3],coords2[3],coords3[3],coords4[3];
+            float normal1[3],normal2[3],normal3[3],normal4[3];
             float u1 = (1/tesselation) * i;
             float u2 = (1/tesselation) * (i+1);
             float v1 = (1/tesselation) * j;
             float v2 = (1/tesselation) * (j+1);
 
             //Calcular as coordenadas dos 4 vertices que utilizaremos para formar triangulos
-            calculaPonto(preCalcMatrix,u1,v1,coords1);
-            calculaPonto(preCalcMatrix,u1,v2,coords2);
-            calculaPonto(preCalcMatrix,u2,v1,coords3);
-            calculaPonto(preCalcMatrix,u2,v2,coords4);
+            calculaPonto(preCalcMatrix,u1,v1,coords1); calculaNormal(preCalcMatrix,u1,v1,normal1);
+            calculaPonto(preCalcMatrix,u1,v2,coords2); calculaNormal(preCalcMatrix,u1,v2,normal2);
+            calculaPonto(preCalcMatrix,u2,v1,coords3); calculaNormal(preCalcMatrix,u2,v1,normal3);
+            calculaPonto(preCalcMatrix,u2,v2,coords4); calculaNormal(preCalcMatrix,u2,v2,normal4);
 
             //Inserir os vertices no vector para depois escrever no ficheiro
             vertices.push_back(coords1[0]);vertices.push_back(coords1[1]);vertices.push_back(coords1[2]);
+            normals.push_back(normal1[0]); normals.push_back(normal1[1]); normals.push_back(normal1[2]);
             vertices.push_back(coords2[0]);vertices.push_back(coords2[1]);vertices.push_back(coords2[2]);
+            normals.push_back(normal2[0]); normals.push_back(normal2[1]); normals.push_back(normal2[2]);
             vertices.push_back(coords3[0]);vertices.push_back(coords3[1]);vertices.push_back(coords3[2]);
+            normals.push_back(normal3[0]); normals.push_back(normal3[1]); normals.push_back(normal3[2]);
             vertices.push_back(coords4[0]);vertices.push_back(coords4[1]);vertices.push_back(coords4[2]);
+            normals.push_back(normal4[0]); normals.push_back(normal4[1]); normals.push_back(normal4[2]);
 
             //Inserir os indices no vertice por ordem de forma a formar triangulos bem orientados.
             indices.push_back(index);
-            indices.push_back(index+2);
             indices.push_back(index+1);
             indices.push_back(index+2);
+            
+            indices.push_back(index+1);
             indices.push_back(index+3);
-            indices.push_back(index+1);
+            indices.push_back(index+2);
 
             index += 4;
         }

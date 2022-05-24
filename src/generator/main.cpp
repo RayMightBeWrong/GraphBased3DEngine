@@ -99,7 +99,7 @@ int handleInput(int argc, char **argv){
 			}
 
 		}
-		if(!strcmp(argv[1], "box")){
+		else if(!strcmp(argv[1], "box")){
 			float tamanho;
 			sscanf(argv[2], "%f", &tamanho);
 			float subDivisoes;
@@ -113,6 +113,7 @@ int handleInput(int argc, char **argv){
 			sscanf(argv[3], "%f", &subDivisoes);
 			m = new Plano(tamanho,subDivisoes);
 		}
+		else return 0;
 		file.open(argv[4]);
 		filename = argv[4];
 	}
@@ -135,6 +136,7 @@ int handleInput(int argc, char **argv){
 			sscanf(argv[4], "%d", &slices);
 			m = new Cilindro(raio,altura,slices);
 		}
+		else return 0;
 		file.open(argv[5]);
 		filename = argv[5];
 	}
@@ -162,6 +164,7 @@ int handleInput(int argc, char **argv){
 
 			m = new Torus(raio,dist,rings,slices);
 		}
+		else return 0;
 		file.open(argv[6]);
 		filename = argv[6];
 	}

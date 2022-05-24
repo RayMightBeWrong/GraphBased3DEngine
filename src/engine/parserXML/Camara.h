@@ -1,4 +1,5 @@
-
+#ifndef CAMARA_H
+#define CAMARA_H
 
 class Camara {
     public:
@@ -12,3 +13,5 @@ class Camara {
                 float camUX,float camUY,float camUZ,
                 float projFOV,float projNEAR,float projFAR);
 };
+
+#endif

@@ -19,8 +19,55 @@ bool XMLParser::parse() {
 	XMLNode* root = doc.FirstChildElement("world");
 	XMLNode* camara = root->FirstChildElement("camera");
 	XMLNode* group = root->FirstChildElement("group");
+	XMLNode* light = root->FirstChildElement("lights");
 	parseCameraXML(camara);
+	parseLightXML(light);
 	grupo = parseGroupXML(group);
+	return true;
+}
+
+bool XMLParser::parseLightXML(XMLNode* lights) {
+	XMLElement *light = lights->FirstChildElement("light");
+	while (light != nullptr) {
+		const char* type = light->Attribute("type");
+
+		if (strcmp(type,"point") == 0) {
+			float x = stof(light->Attribute("posx"));
+			float y = stof(light->Attribute("posy"));
+			float z = stof(light->Attribute("posz"));
+
+			Luz* point = new LuzPosicional(x,y,z);
+
+			luzes.push_back(point);
+
+		}
+
+		if (strcmp(type,"directional") == 0) {
+			float x = stof(light->Attribute("dirx"));
+			float y = stof(light->Attribute("diry"));
+			float z = stof(light->Attribute("dirz"));
+
+			Luz* direc = new LuzDirecional(x,y,z);
+
+			luzes.push_back(direc);
+		}
+
+		if (strcmp(type,"spot") == 0) {
+			float x1 = stof(light->Attribute("posx"));
+			float y1 = stof(light->Attribute("posy"));
+			float z1 = stof(light->Attribute("posz"));
+			float x2 = stof(light->Attribute("dirx"));
+			float y2 = stof(light->Attribute("diry"));
+			float z2 = stof(light->Attribute("dirz"));
+			float cut = stof(light->Attribute("cutoff"));
+
+			Luz* spot = new LuzSpot(x1,y1,z1,x2,y2,z2,cut);
+
+			luzes.push_back(spot);
+		}
+
+		light = light->NextSiblingElement("light");
+	}
 	return true;
 }
 
@@ -44,7 +91,6 @@ bool XMLParser::parseCameraXML(XMLNode* cam) {
 	return true;
 }
 
-// TODO: Adicionar exceptions para combater erros no parsing.
 Grupo XMLParser::parseGroupXML(XMLNode* group){
 	Grupo g;
 	XMLNode* transforms = group->FirstChildElement("transform"); 
@@ -52,7 +98,6 @@ Grupo XMLParser::parseGroupXML(XMLNode* group){
 	XMLNode* models = group->FirstChildElement("models");
 	if (models != nullptr) {
 		g.modelos = getModelos(models);
-		g.modelsIndex = getModelIndex(models);
 	}
 	XMLNode* subGrupos = group->FirstChildElement("group");
 	while (subGrupos != nullptr) {
@@ -146,22 +191,87 @@ vector<Transformacao*> XMLParser::getTransformations(XMLNode* transforms) {
 	return transf; 
 }
 
-vector<string> XMLParser::getModelos(XMLNode* models){
-	vector<string> modelos;
+Cor getColor(XMLElement *color) {
+	float difusa[4],ambiente[4],especular[4],emissiva[4],shiny = 0;
+	XMLElement* diffuse = color->FirstChildElement("diffuse");
+	if (diffuse != nullptr) {
+		difusa[0] = stof(diffuse->Attribute("R"));
+		difusa[1] = stof(diffuse->Attribute("G"));
+		difusa[2] = stof(diffuse->Attribute("B"));
+	}
+	else {
+		difusa[0] = 200;
+		difusa[1] = 200;
+		difusa[2] = 200;
+	}
+	difusa[3] = 1;
+
+	XMLElement* ambient = color->FirstChildElement("ambient");
+	if (ambient != nullptr) {
+		ambiente[0] = stof(ambient->Attribute("R"));
+		ambiente[1] = stof(ambient->Attribute("G"));
+		ambiente[2] = stof(ambient->Attribute("B"));
+	}
+	else {
+		ambiente[0] = 50;
+		ambiente[1] = 50;
+		ambiente[2] = 50;
+	}
+	ambiente[3] = 1;
+
+	XMLElement* specular = color->FirstChildElement("specular");
+	if (specular != nullptr) {
+		especular[0] = stof(specular->Attribute("R"));
+		especular[1] = stof(specular->Attribute("G"));
+		especular[2] = stof(specular->Attribute("B"));
+	}
+	else {
+		especular[0] = 0;
+		especular[1] = 0;
+		especular[2] = 0;
+	}
+	especular[3] = 1;
+
+	XMLElement* emissive = color->FirstChildElement("emissive");
+	if (emissive != nullptr) {
+		emissiva[0] = stof(emissive->Attribute("R"));
+		emissiva[1] = stof(emissive->Attribute("G"));
+		emissiva[2] = stof(emissive->Attribute("B"));
+	}
+	else {
+		emissiva[0] = 0;
+		emissiva[1] = 0;
+		emissiva[2] = 0;
+	}
+	emissiva[3] = 1;
+
+	XMLElement* shininess = color->FirstChildElement("shininess");
+	if (shininess != nullptr) {
+		shiny = stof(shininess->Attribute("value"));
+	}
+	else {
+		shiny = 0;
+	}
+
+	return Cor(difusa,ambiente,especular,emissiva,shiny);
+}
+
+vector<Modelo> XMLParser::getModelos(XMLNode* models){
+	vector<Modelo> modelos;
 	XMLElement* model = models->FirstChildElement("model");
 	while (model != nullptr) {
 		string nameFile = model->Attribute("file"); 
-		modelos.push_back(nameFile);
+		XMLElement* texture = model->FirstChildElement("texture");
+		string textFile = "NO TEXTURE";
+		if (texture != nullptr) textFile = texture->Attribute("file");
+		XMLElement* cor = model->FirstChildElement("color");
+		Cor c;
+		if (cor == nullptr) c = Cor();
+		else c = getColor(cor);
+		Modelo m = Modelo(nameFile,textFile,c);
+		modelos.push_back(m);
 		model = model->NextSiblingElement("model");
 	}
 	return modelos;
 }
 
-vector<GLuint> XMLParser::getModelIndex(XMLNode* models) {
-	vector<GLuint> index;
-	XMLElement* model = models->FirstChildElement("model");
-	while (model != nullptr) {
-		model = model->NextSiblingElement("model");
-	}
-	return index;
-}

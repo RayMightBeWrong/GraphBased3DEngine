@@ -15,7 +15,9 @@ namespace Modelos
 
     private:
         std::vector<float> vertices;
+        std::vector<float> normals;
         std::vector<unsigned int> indexes;
+        int index;
         void buildCubo();
         void buildPlaneTXY(float z);
         void buildPlaneTXZ(float y);

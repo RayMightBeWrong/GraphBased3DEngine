@@ -3,10 +3,12 @@ cmake_minimum_required(VERSION 3.5)
 # Project Name
 PROJECT(engine)
 
-set(SOURCES parserXML/tinyxml2.cpp parserXML/tinyxml2.h parserXML/XMLDocReader.cpp parserXML/XMLDocReader.h Transformacao/Transformacao.h 
-	Transformacao/Escala.cpp Transformacao/Escala.h Transformacao/TranslacaoEstatica.cpp Transformacao/TranslacaoEstatica.h Transformacao/RotacaoEstatica.cpp Transformacao/RotacaoEstatica.h
-	Transformacao/TranslacaoTemporizada.cpp Transformacao/TranslacaoTemporizada.h Transformacao/RotacaoTemporizada.cpp Transformacao/RotacaoTemporizada.h 
-	parserXML/Camara.cpp parserXML/Camara.h parserXML/Grupo.cpp parserXML/Grupo.h)
+set(SOURCES parserXML/tinyxml2.cpp parserXML/tinyxml2.h parserXML/XMLDocReader.cpp parserXML/XMLDocReader.h parserXML/Transformacao/Transformacao.h 
+	parserXML/Transformacao/Escala.cpp parserXML/Transformacao/Escala.h parserXML/Transformacao/TranslacaoEstatica.cpp parserXML/Transformacao/TranslacaoEstatica.h parserXML/Transformacao/RotacaoEstatica.cpp parserXML/Transformacao/RotacaoEstatica.h
+	parserXML/Transformacao/TranslacaoTemporizada.cpp parserXML/Transformacao/TranslacaoTemporizada.h parserXML/Transformacao/RotacaoTemporizada.cpp parserXML/Transformacao/RotacaoTemporizada.h 
+	parserXML/Camara.cpp parserXML/Camara.h parserXML/Grupo.cpp parserXML/Grupo.h
+	parserXML/Luz/Luz.h parserXML/Luz/LuzPosicional.h parserXML/Luz/LuzDirecional.h parserXML/Luz/LuzSpot.h parserXML/Luz/LuzPosicional.cpp parserXML/Luz/LuzDirecional.cpp parserXML/Luz/LuzSpot.cpp
+	parserXML/Modelo.h parserXML/Modelo.cpp parserXML/Cor.h parserXML/Cor.cpp)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_executable(${PROJECT_NAME} main.cpp ${SOURCES})

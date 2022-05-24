@@ -7,6 +7,10 @@
 #include "Grupo.h"
 #include "Camara.h"
 #include <regex>
+#include "Luz/Luz.h"
+#include "Luz/LuzPosicional.h"
+#include "Luz/LuzDirecional.h"
+#include "Luz/LuzSpot.h"
 
 using namespace tinyxml2;
 
@@ -16,14 +20,16 @@ class XMLParser {
         XMLDocument doc;
         Camara camara;
         Grupo grupo;
+        std::vector<Luz*> luzes;
 
         XMLError loadXML(std::string file);
         bool parse();
     private:    
+        bool parseLightXML(XMLNode* light);
         bool parseCameraXML(XMLNode* camera);
         Grupo parseGroupXML(XMLNode* group);
         std::vector<Transformacao*> getTransformations(XMLNode* transforms);
-        std::vector<std::string> getModelos(XMLNode* parent);
+        std::vector<Modelo> getModelos(XMLNode* parent);
         std::vector<GLuint> getModelIndex(XMLNode* models) ;
 };
 

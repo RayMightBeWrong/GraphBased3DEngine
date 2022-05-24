@@ -10,7 +10,7 @@ Torus::Torus(float r,float dist,int rs,int sl){
 
 void Torus::saveModel(std::ofstream &file) {
     buildTorus();
-    writeFile(file, this->vertices, this->indexes);
+    writeFile(file, this->vertices, this->indexes,this->normals);
 }
 
 void Torus::buildTorus(){
