@@ -17,6 +17,7 @@ namespace Modelos
     private:
         std::vector<float> vertices;
         std::vector<unsigned int> indexes;
+        std::vector<float> textCoords;
         std::vector<float> normals;
         void buildSuperficieBezier();
 };

@@ -10,6 +10,7 @@ namespace Modelos
         public:
             std::vector<float> pontosControlo;
             std::vector<float> normals;
+            std::vector<float> textCoords;
             std::vector<float> vertices;
             std::vector<int> indices;
             float tesselation;

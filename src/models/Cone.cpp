@@ -10,7 +10,7 @@ Cone::Cone(float r,float h,float sli,float sta) {
 
 void Cone::saveModel(std::ofstream &file) {
     buildCone();
-    writeFile(file, this->vertices, this->indexes,this->normals);
+    writeFile(file, this->vertices, this->textCoords,this->indexes,this->normals);
 }
 
 void Cone::buildCone(){
@@ -19,17 +19,20 @@ void Cone::buildCone(){
 	int index = 2;
 	vertices.push_back(0);vertices.push_back(0);vertices.push_back(0);
 	normals.push_back(0);normals.push_back(-1);normals.push_back(0);
+	textCoords.push_back(0.5);textCoords.push_back(0.5);
+
 	vertices.push_back(0);vertices.push_back(0);vertices.push_back(raio);
 	normals.push_back(0);normals.push_back(-1);normals.push_back(0);
+	textCoords.push_back(1);textCoords.push_back(0);
 
     //BASE DO CONE
 	for (int i = 1; i <= slices;i++) {
 		float alphaAngle = i * sliceStep;
 		float x = raio * sin(alphaAngle);
 		float z = raio * cos(alphaAngle);
-		vertices.push_back(x);normals.push_back(0);
-		vertices.push_back(0);normals.push_back(-1);
-		vertices.push_back(z);normals.push_back(0);
+		vertices.push_back(x);vertices.push_back(0);vertices.push_back(z);
+		normals.push_back(0);normals.push_back(-1);normals.push_back(0);
+		textCoords.push_back(0.5 * cos(alphaAngle) + 0.5);textCoords.push_back(0.5 * sin(alphaAngle) + 0.5);	
 		
 		indexes.push_back(index);
 		indexes.push_back(index-1);
@@ -50,7 +53,9 @@ void Cone::buildCone(){
 
 		vertices.push_back(0);vertices.push_back(y);vertices.push_back(xy);
 		normals.push_back(n[0]);normals.push_back(n[1]);normals.push_back(n[2]);
+		textCoords.push_back(0);textCoords.push_back(y/height);
 		index++;
+
         for (int j = 1;j <= slices;j++) {
 			float alphaAngle = j * sliceStep;
 			float x = xy * sin(alphaAngle);
@@ -60,6 +65,7 @@ void Cone::buildCone(){
 
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(normal[0]);normals.push_back(normal[1]);normals.push_back(normal[2]);
+			textCoords.push_back(j*(1/slices));textCoords.push_back(y/height);
 
 			indexes.push_back(indexStackAnterior);
 			indexes.push_back(indexStackAnterior + 1);

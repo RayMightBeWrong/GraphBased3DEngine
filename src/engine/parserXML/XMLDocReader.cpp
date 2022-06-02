@@ -97,7 +97,7 @@ Grupo XMLParser::parseGroupXML(XMLNode* group){
 	if (transforms != nullptr) g.transformacoes = getTransformations(transforms);
 	XMLNode* models = group->FirstChildElement("models");
 	if (models != nullptr) {
-		g.modelos = getModelos(models);
+		g.modelos = getFiguras(models);
 	}
 	XMLNode* subGrupos = group->FirstChildElement("group");
 	while (subGrupos != nullptr) {
@@ -256,8 +256,8 @@ Cor getColor(XMLElement *color) {
 	return Cor(difusa,ambiente,especular,emissiva,shiny);
 }
 
-vector<Modelo> XMLParser::getModelos(XMLNode* models){
-	vector<Modelo> modelos;
+vector<Figura> XMLParser::getFiguras(XMLNode* models){
+	vector<Figura> figuras;
 	XMLElement* model = models->FirstChildElement("model");
 	while (model != nullptr) {
 		string nameFile = model->Attribute("file"); 
@@ -268,10 +268,10 @@ vector<Modelo> XMLParser::getModelos(XMLNode* models){
 		Cor c;
 		if (cor == nullptr) c = Cor();
 		else c = getColor(cor);
-		Modelo m = Modelo(nameFile,textFile,c);
-		modelos.push_back(m);
+		Figura m = Figura(nameFile,textFile,c);
+		figuras.push_back(m);
 		model = model->NextSiblingElement("model");
 	}
-	return modelos;
+	return figuras;
 }
 

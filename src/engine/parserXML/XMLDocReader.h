@@ -29,7 +29,7 @@ class XMLParser {
         bool parseCameraXML(XMLNode* camera);
         Grupo parseGroupXML(XMLNode* group);
         std::vector<Transformacao*> getTransformations(XMLNode* transforms);
-        std::vector<Modelo> getModelos(XMLNode* parent);
+        std::vector<Figura> getFiguras(XMLNode* parent);
         std::vector<GLuint> getModelIndex(XMLNode* models) ;
 };
 

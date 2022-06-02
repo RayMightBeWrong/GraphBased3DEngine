@@ -9,7 +9,7 @@ Cubo::Cubo(float tam,float sub){
 void Cubo::saveModel(std::ofstream &file){
 	index = 0;
 	buildCubo();
-    writeFile(file, this->vertices, this->indexes,this->normals);
+    writeFile(file, this->vertices, this->textCoords,this->indexes,this->normals);
 }
 
 void Cubo::buildCubo(){
@@ -28,13 +28,20 @@ void Cubo::buildPlaneTXY(float z){
         for (float y = -tamanho/2; y < tamanho/2; y += step) {
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(0);normals.push_back(1);
+			textCoords.push_back((x + tamanho/2)/tamanho);textCoords.push_back((y + tamanho/2)/tamanho);
+
 			vertices.push_back(x+step);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(0);normals.push_back(1);
+			textCoords.push_back((x + step + tamanho/2)/tamanho);textCoords.push_back((y + tamanho/2)/tamanho);
+
 			vertices.push_back(x);vertices.push_back(y+step);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(0);normals.push_back(1);
+			textCoords.push_back((x + tamanho/2)/tamanho);textCoords.push_back((y + step + tamanho/2)/tamanho);
+
 			vertices.push_back(x+step);vertices.push_back(y+step);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(0);normals.push_back(1);
-			
+			textCoords.push_back((x + step + tamanho/2)/tamanho);textCoords.push_back((y + step + tamanho/2)/tamanho);
+
 			indexes.push_back(index);indexes.push_back(index+1);indexes.push_back(index+3);
 			indexes.push_back(index+3);indexes.push_back(index+2);indexes.push_back(index);
 
@@ -49,12 +56,19 @@ void Cubo::buildPlaneTXYBack(float z){
         for (float y = -tamanho/2; y < tamanho/2; y += step) {
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(0);normals.push_back(-1);
+			textCoords.push_back((x + tamanho/2)/tamanho);textCoords.push_back((y + tamanho/2)/tamanho);
+
 			vertices.push_back(x+step);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(0);normals.push_back(-1);
+			textCoords.push_back((x + step + tamanho/2)/tamanho);textCoords.push_back((y + tamanho/2)/tamanho);
+
 			vertices.push_back(x);vertices.push_back(y+step);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(0);normals.push_back(-1);
+			textCoords.push_back((x + tamanho/2)/tamanho);textCoords.push_back((y + step + tamanho/2)/tamanho);
+
 			vertices.push_back(x+step);vertices.push_back(y+step);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(0);normals.push_back(-1);
+			textCoords.push_back((x + step + tamanho/2)/tamanho);textCoords.push_back((y + step + tamanho/2)/tamanho);
 			
 			indexes.push_back(index+1);indexes.push_back(index);indexes.push_back(index+3);
 			indexes.push_back(index+2);indexes.push_back(index+3);indexes.push_back(index);
@@ -71,13 +85,20 @@ void Cubo::buildPlaneTXZ(float y){
         for (float z = -tamanho/2; z < tamanho/2; z += step) {
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(1);normals.push_back(0);
+			textCoords.push_back((x + tamanho/2)/tamanho);textCoords.push_back((z + tamanho/2)/tamanho);
+
 			vertices.push_back(x+step);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(1);normals.push_back(0);
+			textCoords.push_back((x + step + tamanho/2)/tamanho);textCoords.push_back((z + tamanho/2)/tamanho);
+
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z+step);
 			normals.push_back(0);normals.push_back(1);normals.push_back(0);
+			textCoords.push_back((x + tamanho/2)/tamanho);textCoords.push_back((z + step + tamanho/2)/tamanho);
+
 			vertices.push_back(x+step);vertices.push_back(y);vertices.push_back(z+step);
 			normals.push_back(0);normals.push_back(1);normals.push_back(0);
-			
+			textCoords.push_back((x + step + tamanho/2)/tamanho);textCoords.push_back((z + step + tamanho/2)/tamanho);
+
 			indexes.push_back(index+1);indexes.push_back(index);indexes.push_back(index+3);
 			indexes.push_back(index+2);indexes.push_back(index+3);indexes.push_back(index);
 			
@@ -92,13 +113,20 @@ void Cubo::buildPlaneTXZBack(float y){
         for (float z = -tamanho/2; z < tamanho/2; z += step) {
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(-1);normals.push_back(0);
+			textCoords.push_back((x + tamanho/2)/tamanho);textCoords.push_back((z + tamanho/2)/tamanho);
+
 			vertices.push_back(x+step);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(0);normals.push_back(-1);normals.push_back(0);
+			textCoords.push_back((x + step + tamanho/2)/tamanho);textCoords.push_back((z + tamanho/2)/tamanho);
+
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z+step);
 			normals.push_back(0);normals.push_back(-1);normals.push_back(0);
+			textCoords.push_back((x + tamanho/2)/tamanho);textCoords.push_back((z + step + tamanho/2)/tamanho);
+			
 			vertices.push_back(x+step);vertices.push_back(y);vertices.push_back(z+step);
 			normals.push_back(0);normals.push_back(-1);normals.push_back(0);
-			
+			textCoords.push_back((x + step + tamanho/2)/tamanho);textCoords.push_back((z + step + tamanho/2)/tamanho);
+
 			indexes.push_back(index);indexes.push_back(index+1);indexes.push_back(index+3);
 			indexes.push_back(index+3);indexes.push_back(index+2);indexes.push_back(index);
 			
@@ -114,13 +142,20 @@ void Cubo::buildPlaneTYZ(float x){
         for (float y = -tamanho/2; y < tamanho/2; y += step) {
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(1);normals.push_back(0);normals.push_back(0);
+			textCoords.push_back((z + tamanho/2)/tamanho);textCoords.push_back((y + tamanho/2)/tamanho);
+
 			vertices.push_back(x);vertices.push_back(y+step);vertices.push_back(z);
 			normals.push_back(1);normals.push_back(0);normals.push_back(0);
+			textCoords.push_back((z + tamanho/2)/tamanho);textCoords.push_back((y + step + tamanho/2)/tamanho);
+
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z+step);
 			normals.push_back(1);normals.push_back(0);normals.push_back(0);
+			textCoords.push_back((z + step + tamanho/2)/tamanho);textCoords.push_back((y + tamanho/2)/tamanho);
+			
 			vertices.push_back(x);vertices.push_back(y+step);vertices.push_back(z+step);
 			normals.push_back(1);normals.push_back(0);normals.push_back(0);
-			
+			textCoords.push_back((z + step + tamanho/2)/tamanho);textCoords.push_back((y + step + tamanho/2)/tamanho);
+
 			indexes.push_back(index);indexes.push_back(index+1);indexes.push_back(index+3);
 			indexes.push_back(index+3);indexes.push_back(index+2);indexes.push_back(index);
 			
@@ -135,13 +170,20 @@ void Cubo::buildPlaneTYZBack(float x){
         for (float y = -tamanho/2; y < tamanho/2; y += step) {
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z);
 			normals.push_back(-1);normals.push_back(0);normals.push_back(0);
+			textCoords.push_back((z + tamanho/2)/tamanho);textCoords.push_back((y + tamanho/2)/tamanho);
+
 			vertices.push_back(x);vertices.push_back(y+step);vertices.push_back(z);
 			normals.push_back(-1);normals.push_back(0);normals.push_back(0);
+			textCoords.push_back((z + tamanho/2)/tamanho);textCoords.push_back((y + step + tamanho/2)/tamanho);
+
 			vertices.push_back(x);vertices.push_back(y);vertices.push_back(z+step);
 			normals.push_back(-1);normals.push_back(0);normals.push_back(0);
+			textCoords.push_back((z + step + tamanho/2)/tamanho);textCoords.push_back((y + tamanho/2)/tamanho);
+			
 			vertices.push_back(x);vertices.push_back(y+step);vertices.push_back(z+step);
 			normals.push_back(-1);normals.push_back(0);normals.push_back(0);
-			
+			textCoords.push_back((z + step + tamanho/2)/tamanho);textCoords.push_back((y + step + tamanho/2)/tamanho);
+
 			indexes.push_back(index+1);indexes.push_back(index);indexes.push_back(index+3);
 			indexes.push_back(index+2);indexes.push_back(index+3);indexes.push_back(index);
 			

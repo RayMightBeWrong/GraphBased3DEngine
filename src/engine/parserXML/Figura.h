@@ -4,12 +4,13 @@
 #include <string>
 #include "Cor.h"
 
-class Modelo {
+class Figura {
     public:
         std::string modelName;
         std::string textureName;
-        Cor corModelo;
-        Modelo(std::string model,std::string text,Cor cor);
+        Cor corFigura;
+        unsigned int textureBuffer;
+        Figura(std::string model,std::string text,Cor cor);
 };
 
 #endif

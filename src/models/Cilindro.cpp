@@ -9,7 +9,7 @@ Cilindro::Cilindro(float r,float h,float sl){
 
 void Cilindro::saveModel(std::ofstream &file) {
     buildCilindro();
-    writeFile(file, this->vertices, this->indexes,this->normals);
+    writeFile(file, this->vertices, this->textCoords,this->indexes,this->normals);
 }
 
 void Cilindro::buildCilindro(){
@@ -17,12 +17,20 @@ void Cilindro::buildCilindro(){
 
     vertices.push_back(0);vertices.push_back(0);vertices.push_back(0);
 	normals.push_back(0);normals.push_back(-1);normals.push_back(0);
+	textCoords.push_back(0.5);textCoords.push_back(0.5);
+
 	vertices.push_back(0);vertices.push_back(height);vertices.push_back(0);
 	normals.push_back(0);normals.push_back(1);normals.push_back(0);
+	textCoords.push_back(0.5);textCoords.push_back(0.5);
+
 	vertices.push_back(raio*sinf(alfa));vertices.push_back(0);vertices.push_back(raio*cosf(alfa));
 	normals.push_back(0);normals.push_back(-1);normals.push_back(0);
+	textCoords.push_back(1);textCoords.push_back(0);
+
 	vertices.push_back(raio*sinf(alfa));vertices.push_back(height);vertices.push_back(raio*cosf(alfa));
 	normals.push_back(0);normals.push_back(1);normals.push_back(0);
+	textCoords.push_back(1);textCoords.push_back(0);
+
     int index = 4;
 
 	// Adicionar vértices da base
@@ -33,9 +41,10 @@ void Cilindro::buildCilindro(){
 		float x2 = raio * sinf(alphaAngle);
 		float z2 = raio * cosf(alphaAngle);
 
-		vertices.push_back(x2);normals.push_back(0);
-		vertices.push_back(0);normals.push_back(-1);
-		vertices.push_back(z2);normals.push_back(0);
+		vertices.push_back(x2);vertices.push_back(0);vertices.push_back(z2);
+		normals.push_back(0);normals.push_back(-1);normals.push_back(0);
+		textCoords.push_back(0.5 * cos(alphaAngle) + 0.5);textCoords.push_back(0.5 * sin(alphaAngle) + 0.5);
+
 		indexes.push_back(index-2);
 		indexes.push_back(index);
 		indexes.push_back(0);
@@ -43,6 +52,8 @@ void Cilindro::buildCilindro(){
 		vertices.push_back(x2);normals.push_back(0);
 		vertices.push_back(height);normals.push_back(1);
 		vertices.push_back(z2);normals.push_back(0);
+		textCoords.push_back(0.5 * cos(alphaAngle) + 0.5);textCoords.push_back(0.5 * sin(alphaAngle) + 0.5);
+
 		indexes.push_back(1);
 		indexes.push_back(index+1);
 		indexes.push_back(index-1);
@@ -56,8 +67,11 @@ void Cilindro::buildCilindro(){
 	normalize(n);
 	vertices.push_back(raio * sinf(alfa));vertices.push_back(0);vertices.push_back(raio*cosf(alfa));
 	normals.push_back(n[0]);normals.push_back(n[1]);normals.push_back(n[2]);
+	textCoords.push_back(0);textCoords.push_back(0);
+
 	vertices.push_back(raio * sinf(alfa));vertices.push_back(height);vertices.push_back(raio*cosf(alfa));
 	normals.push_back(n[0]);normals.push_back(n[1]);normals.push_back(n[2]);
+	textCoords.push_back(0);textCoords.push_back(1);
 
 	index+=2;
 	for (int i = 0; i < slices;i++) {
@@ -69,6 +83,8 @@ void Cilindro::buildCilindro(){
 		vertices.push_back(x2);normals.push_back(n[0]);
 		vertices.push_back(0);normals.push_back(n[1]);
 		vertices.push_back(z2);normals.push_back(n[2]);
+		textCoords.push_back((i+1) * (1/slices));textCoords.push_back(0);
+
 		indexes.push_back(index-2);
 		indexes.push_back(index-1);
 		indexes.push_back(index+1);
@@ -76,6 +92,8 @@ void Cilindro::buildCilindro(){
 		vertices.push_back(x2);normals.push_back(n[0]);
 		vertices.push_back(height);normals.push_back(n[1]);
 		vertices.push_back(z2);normals.push_back(n[2]);
+		textCoords.push_back((i+1) * (1/slices));textCoords.push_back(1);
+
 		indexes.push_back(index+1);
 		indexes.push_back(index);
 		indexes.push_back(index-2);

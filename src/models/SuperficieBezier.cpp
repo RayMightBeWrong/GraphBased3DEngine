@@ -25,6 +25,7 @@ void SuperficieBezier::saveModel(std::ofstream &file) {
 
         this->vertices.insert(this->vertices.end(),patches[i].vertices.begin(),patches[i].vertices.end());
         this->normals.insert(this->normals.end(),patches[i].normals.begin(),patches[i].normals.end());
+        this->textCoords.insert(this->textCoords.end(),patches[i].textCoords.begin(),patches[i].textCoords.end());
 
         // Para cada valor dos indices ajustar para o indice global.
         for (int j = 0; j < patches[i].indices.size();j++) {
@@ -37,7 +38,7 @@ void SuperficieBezier::saveModel(std::ofstream &file) {
         index += patches[i].vertices.size() / 3;
     }
 
-    writeFile(file, this->vertices, this->indexes,this->normals);
+    writeFile(file, this->vertices, this->textCoords,this->indexes,this->normals);
 
 }
 

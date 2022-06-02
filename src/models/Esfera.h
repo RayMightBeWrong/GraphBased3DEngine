@@ -12,8 +12,8 @@ class Esfera : public Modelo
 {
 public:
     int raio;
-    int slices;
-    int stacks;
+    float slices;
+    float stacks;
     Esfera(int r,int sli,int sta);
 	void saveModel(std::ofstream &file);
     void printSucess(std::string file);
@@ -21,6 +21,7 @@ public:
 private:
     std::vector<float> vertices;
     std::vector<float> normals;
+    std::vector<float> textCoords;
     std::vector<unsigned int> indexes;
     void buildEsfera();
     void addVertex(std::vector<float> &vertexs, 

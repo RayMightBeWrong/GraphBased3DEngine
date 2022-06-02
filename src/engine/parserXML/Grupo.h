@@ -2,7 +2,7 @@
 #define GRUPO_H
 #include <vector>
 #include <string>
-#include "Modelo.h"
+#include "Figura.h"
 #include "Transformacao/Transformacao.h"
 #include "Transformacao/TranslacaoEstatica.h"
 #include "Transformacao/TranslacaoTemporizada.h"
@@ -13,7 +13,7 @@
 class Grupo {
     public:
         std::vector<Transformacao*> transformacoes;
-        std::vector<Modelo> modelos;
+        std::vector<Figura> modelos;
         std::vector<Grupo> subgrupos;
         std::vector<GLuint> modelsIndex;
 };

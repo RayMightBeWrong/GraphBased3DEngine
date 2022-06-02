@@ -164,12 +164,19 @@ void Patch::buildPatch() {
             //Inserir os vertices no vector para depois escrever no ficheiro
             vertices.push_back(coords1[0]);vertices.push_back(coords1[1]);vertices.push_back(coords1[2]);
             normals.push_back(normal1[0]); normals.push_back(normal1[1]); normals.push_back(normal1[2]);
+            textCoords.push_back(u1);textCoords.push_back(v1);
+
             vertices.push_back(coords2[0]);vertices.push_back(coords2[1]);vertices.push_back(coords2[2]);
             normals.push_back(normal2[0]); normals.push_back(normal2[1]); normals.push_back(normal2[2]);
+            textCoords.push_back(u1);textCoords.push_back(v2);
+
             vertices.push_back(coords3[0]);vertices.push_back(coords3[1]);vertices.push_back(coords3[2]);
             normals.push_back(normal3[0]); normals.push_back(normal3[1]); normals.push_back(normal3[2]);
+            textCoords.push_back(u2);textCoords.push_back(v1);
+
             vertices.push_back(coords4[0]);vertices.push_back(coords4[1]);vertices.push_back(coords4[2]);
             normals.push_back(normal4[0]); normals.push_back(normal4[1]); normals.push_back(normal4[2]);
+            textCoords.push_back(u2);textCoords.push_back(v2);
 
             //Inserir os indices no vertice por ordem de forma a formar triangulos bem orientados.
             indices.push_back(index);

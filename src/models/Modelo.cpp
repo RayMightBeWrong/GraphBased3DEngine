@@ -6,13 +6,15 @@ void Modelo::writeNrVertices(std::ofstream& myFile, int nrVertices){
 	myFile << "\n";
 }
 
-void Modelo::writeV(std::ofstream& myFile, float x, float y, float z,float nx,float ny,float nz){
+void Modelo::writeV(std::ofstream& myFile, float x, float y, float z,float nx,float ny,float nz,float tx,float ty){
 	myFile << x; myFile << " ";
 	myFile << y; myFile << " ";
 	myFile << z; myFile << " ";
 	myFile << nx; myFile << " ";
 	myFile << ny; myFile << " ";
-	myFile << nz; myFile << "\n";
+	myFile << nz; myFile << " ";
+	myFile << tx; myFile << " ";
+	myFile << ty; myFile << "\n";
 }
 
 void Modelo::writeIndexes(std::ofstream& myFile, std::vector<unsigned int> &indexes){
@@ -23,7 +25,8 @@ void Modelo::writeIndexes(std::ofstream& myFile, std::vector<unsigned int> &inde
 }
 
 void Modelo::writeFile(std::ofstream& myFile, 
-						std::vector<float> &vertexs, 
+						std::vector<float> &vertexs,
+						std::vector<float> textures,  
 						std::vector<unsigned int> &indexes,
 						std::vector<float> normals){
 
@@ -31,7 +34,7 @@ void Modelo::writeFile(std::ofstream& myFile,
 	
 	writeNrVertices(myFile, verticeCount);
 	for(int i = 0; i < verticeCount; i++)
-		writeV(myFile, vertexs[i*3], vertexs[i*3+1], vertexs[i*3+2] , normals[i*3],normals[i*3+1],normals[i*3+2]);
+		writeV(myFile, vertexs[i*3], vertexs[i*3+1], vertexs[i*3+2] , normals[i*3],normals[i*3+1],normals[i*3+2],textures[i*2],textures[i*2 + 1]);
 	writeIndexes(myFile, indexes);
 }
 

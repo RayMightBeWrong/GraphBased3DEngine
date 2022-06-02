@@ -16,6 +16,7 @@ namespace Modelos
     private:
         std::vector<float> vertices;
         std::vector<float> normals;
+        std::vector<float> textCoords;
         std::vector<unsigned int> indexes;
         int index;
         void buildCubo();
