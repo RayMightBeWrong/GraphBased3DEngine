@@ -21,7 +21,7 @@ bool XMLParser::parse() {
 	XMLNode* group = root->FirstChildElement("group");
 	XMLNode* light = root->FirstChildElement("lights");
 	parseCameraXML(camara);
-	parseLightXML(light);
+	if (light != nullptr) parseLightXML(light);
 	grupo = parseGroupXML(group);
 	return true;
 }

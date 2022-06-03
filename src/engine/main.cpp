@@ -224,12 +224,12 @@ bool prepareData(Grupo *g) {
 
 void prepareLights() {
 	int size = parser.luzes.size();
-	glEnable(GL_LIGHTING);
-	glEnable(GL_RESCALE_NORMAL);
-	float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 
 	if (size > 0 ) {
+		glEnable(GL_LIGHTING);
+		glEnable(GL_RESCALE_NORMAL);
+		float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 		glEnable(GL_LIGHT0);
 	}
 	if (size > 1 ) {
@@ -373,6 +373,7 @@ int main(int argc, char **argv) {
 		if (parser.loadXML(argv[1]) == XML_SUCCESS) {
 			bool sucess = parser.parse();
 			if (sucess) {
+				std::cout << "TOP" << std::endl;
 				if (prepareData(&parser.grupo)) {
 					prepareLights();
 					createVBOs();
