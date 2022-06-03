@@ -32,8 +32,11 @@ XMLParser parser;
 unordered_map<string, int> filesIndex;
 
 int startX, startY, tracking = 0;
-float beta, alfa, radius;
+float teta, alfa, radius;
 float px, py, pz;
+float lx, ly, lz;
+float dx, dy, dz;
+float horizontal,vertical,frente;
 
 void changeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short
@@ -57,6 +60,21 @@ void changeSize(int w, int h) {
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
+}
+
+void cross(float *a, float *b, float *res) {
+
+	res[0] = a[1]*b[2] - a[2]*b[1];
+	res[1] = a[2]*b[0] - a[0]*b[2];
+	res[2] = a[0]*b[1] - a[1]*b[0];
+}
+
+void normalize(float *a) {
+
+	float l = sqrt(a[0]*a[0] + a[1] * a[1] + a[2] * a[2]);
+	a[0] = a[0]/l;
+	a[1] = a[1]/l;
+	a[2] = a[2]/l;
 }
 
 void readVertices(fstream& myFile, int verticeCount){
@@ -100,18 +118,39 @@ void readIndexes(fstream& myFile){
 
 
 void initCamera(){
-	radius = sqrt(pow(parser.camara.camPX, 2) + pow(parser.camara.camPY, 2) + pow(parser.camara.camPZ, 2));
-	alfa = atan(parser.camara.camPZ / parser.camara.camPX);
-	beta = atan((sqrt(pow(parser.camara.camPX, 2) + pow(parser.camara.camPZ, 2))) / parser.camara.camPY);
 	px = parser.camara.camPX;
 	py = parser.camara.camPY;
 	pz = parser.camara.camPZ;
+	lx = parser.camara.camLX;
+	ly = parser.camara.camLY;
+	lz = parser.camara.camLZ;
+	dx = lx - px;
+	dy = ly-py;
+	dz = lz-pz;
+	
+	
+
+}
+
+void reloadCamera() {
+	radius = sqrt(pow(lx-px,2) + pow(ly-py,2) + pow(lz-pz,2));
+	teta = asin((ly-py)/radius);
+	alfa = atan2(lx-px,lz-pz);
+	lx = px + radius * cosf(teta) * sinf(alfa);
+	ly = py + radius * sinf(teta);
+	lz = pz + radius * cosf(teta) * cosf(alfa);
+	dx = lx-px;
+	dy = ly-py;
+	dz = lz-pz;
 }
 
 void updateCamera(){
-	px = radius * cos(beta) * sin(alfa);
-	py = radius * sin(beta);
-	pz = radius * cos(beta) * cos(alfa);
+	lx = px + radius * cosf(teta) * sinf(alfa);
+	ly = py + radius * sinf(teta);
+	lz = pz + radius * cosf(teta) * cosf(alfa);
+	dx = lx-px;
+	dy = ly-py;
+	dz = lz-pz;
 }
 
 
@@ -226,7 +265,7 @@ void prepareLights() {
 	int size = parser.luzes.size();
 
 	if (size > 0 ) {
-		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHTING);	
 		glEnable(GL_RESCALE_NORMAL);
 		float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
@@ -245,7 +284,7 @@ void prepareLights() {
 
 void desenhaGrupo(Grupo g, float time) {
 	glPushMatrix();
-	for (int i = 0; i < g.transformacoes.size();i++) {
+	for (int i = 0; i < g.transformacoes.size();i++) {	
 		g.transformacoes[i]->apply(time);
 	}
 	for (int i = 0; i < g.modelsIndex.size();i++) {
@@ -290,7 +329,7 @@ void renderScene(void) {
 	// set the camera
 	glLoadIdentity();
 	gluLookAt(px, py, pz,
-		      parser.camara.camLX,parser.camara.camLY,parser.camara.camLZ,
+		      lx,ly,lz,
 			  parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ);
 	desenhaGrupo(parser.grupo, glutGet(GLUT_ELAPSED_TIME) / 1000.f);
 	
@@ -302,11 +341,78 @@ void renderScene(void) {
 void processKeys(unsigned char key, int xx, int yy){
 	switch(key){
 		case 115: // 'w'
+			px = px - 0.2 * dx;
+			pz = pz - 0.2 * dz;
+			lx = lx - 0.2 * dx;
+			lz = lz - 0.2 * dz; 
 			break;
 
 		case 119: // 's'
+			px = px + 0.2 * dx;
+			pz = pz + 0.2 * dz;
+			lx = lx + 0.2 * dx;
+			lz = lz + 0.2 * dz; 
 			break;
 
+		case 100: // 'd'
+		{
+			float d[3] = {dx,dy,dz};
+			float up[3] = {parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ};
+			float right[3];
+			cross(d,up,right);
+			px = px + 0.2 * right[0];
+			pz = pz + 0.2 * right[2];
+			lx = lx + 0.2 * right[0];
+			lz = lz + 0.2 * right[2];
+			break;
+		}
+		
+		case 97: // 'a'
+		{
+			float d1[3] = {dx,dy,dz};
+			float up1[3] = {parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ};
+			float right1[3];
+			cross(d1,up1,right1);
+			px = px - 0.2 * right1[0];
+			pz = pz - 0.2 * right1[2];
+			lx = lx - 0.2 * right1[0];
+			lz = lz - 0.2 * right1[2];
+			break;
+		}
+
+		case 122: // 'z'
+		{
+			py = py+0.2*radius;
+			reloadCamera();
+			break;
+		}
+
+		case 120: // 'x'
+		{
+			py = py-0.2 * radius;
+			reloadCamera();
+			break;
+		}
+
+		case 109: //'m'
+		{
+			px = px - 0.2 * dx;
+			py = py - 0.2 * dy;
+			pz = pz - 0.2 * dz;
+			reloadCamera();
+			break;
+		}
+
+		case 110: //'n'
+		{
+			px = px + 0.2 * dx;
+			py = py + 0.2 * dy;
+			pz = pz + 0.2 * dz;
+			reloadCamera();
+			break;
+		}
+
+		
 		case 27: // ESCAPE
 			exit(0); break;
 	}
@@ -316,19 +422,19 @@ void processKeys(unsigned char key, int xx, int yy){
 void processSpecialKeys(int key, int xx, int yy){
 	switch(key){
 		case GLUT_KEY_RIGHT:
-			beta ++; 
+			alfa -= 0.1; 
 			break;
 
 		case GLUT_KEY_LEFT:
-			beta--;
+			alfa += 0.1;
 			break;
 
 		case GLUT_KEY_UP:
-			alfa++;
+			teta += 0.1;
 			break;
 
 		case GLUT_KEY_DOWN:
-			alfa--;
+			teta -= 0.1;
 			break;
 	}
 	updateCamera();
@@ -373,11 +479,11 @@ int main(int argc, char **argv) {
 		if (parser.loadXML(argv[1]) == XML_SUCCESS) {
 			bool sucess = parser.parse();
 			if (sucess) {
-				std::cout << "TOP" << std::endl;
 				if (prepareData(&parser.grupo)) {
 					prepareLights();
 					createVBOs();
 					initCamera();
+					reloadCamera();
 					glutMainLoop();
 				}
 				else std::cout << "Erro nos modelos pedidos para desenhar no cenário" << std::endl;
