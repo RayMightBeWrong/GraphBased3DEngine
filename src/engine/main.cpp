@@ -340,17 +340,17 @@ void renderScene(void) {
 void processKeys(unsigned char key, int xx, int yy){
 	switch(key){
 		case 115: // 'w'
-			px = px - 0.01 * dx;
-			pz = pz - 0.01 * dz;
-			lx = lx - 0.01 * dx;
-			lz = lz - 0.01 * dz; 
+			px = px - 0.02 * dx;
+			pz = pz - 0.02 * dz;
+			lx = lx - 0.02 * dx;
+			lz = lz - 0.02 * dz; 
 			break;
 
 		case 119: // 's'
-			px = px + 0.01 * dx;
-			pz = pz + 0.01 * dz;
-			lx = lx + 0.01 * dx;
-			lz = lz + 0.01 * dz; 
+			px = px + 0.02 * dx;
+			pz = pz + 0.02 * dz;
+			lx = lx + 0.02 * dx;
+			lz = lz + 0.02 * dz; 
 			break;
 
 		case 100: // 'd'
@@ -359,10 +359,10 @@ void processKeys(unsigned char key, int xx, int yy){
 			float up[3] = {parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ};
 			float right[3];
 			cross(d,up,right);
-			px = px + 0.01 * right[0];
-			pz = pz + 0.01 * right[2];
-			lx = lx + 0.01 * right[0];
-			lz = lz + 0.01 * right[2];
+			px = px + 0.02 * right[0];
+			pz = pz + 0.02 * right[2];
+			lx = lx + 0.02 * right[0];
+			lz = lz + 0.02 * right[2];
 			break;
 		}
 		
@@ -372,41 +372,41 @@ void processKeys(unsigned char key, int xx, int yy){
 			float up1[3] = {parser.camara.camUX,parser.camara.camUY,parser.camara.camUZ};
 			float right1[3];
 			cross(d1,up1,right1);
-			px = px - 0.01 * right1[0];
-			pz = pz - 0.01 * right1[2];
-			lx = lx - 0.01 * right1[0];
-			lz = lz - 0.01 * right1[2];
+			px = px - 0.02 * right1[0];
+			pz = pz - 0.02 * right1[2];
+			lx = lx - 0.02 * right1[0];
+			lz = lz - 0.02 * right1[2];
 			break;
 		}
 
 		case 122: // 'z'
 		{
-			py = py+0.01*radius;
+			py = py+0.02*radius;
 			reloadCamera();
 			break;
 		}
 
 		case 120: // 'x'
 		{
-			py = py-0.01 * radius;
+			py = py-0.02 * radius;
 			reloadCamera();
 			break;
 		}
 
 		case 109: //'m'
 		{
-			px = px - 0.01 * dx;
-			py = py - 0.01 * dy;
-			pz = pz - 0.01 * dz;
+			px = px - 0.02 * dx;
+			py = py - 0.02 * dy;
+			pz = pz - 0.02 * dz;
 			reloadCamera();
 			break;
 		}
 
 		case 110: //'n'
 		{
-			px = px + 0.01 * dx;
-			py = py + 0.01 * dy;
-			pz = pz + 0.01 * dz;
+			px = px + 0.02 * dx;
+			py = py + 0.02 * dy;
+			pz = pz + 0.02 * dz;
 			reloadCamera();
 			break;
 		}
