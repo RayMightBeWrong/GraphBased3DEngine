@@ -421,19 +421,21 @@ void processKeys(unsigned char key, int xx, int yy){
 void processSpecialKeys(int key, int xx, int yy){
 	switch(key){
 		case GLUT_KEY_RIGHT:
-			alfa -= 0.1; 
+			alfa -= 0.05; 
 			break;
 
 		case GLUT_KEY_LEFT:
-			alfa += 0.1;
+			alfa += 0.05;
 			break;
 
 		case GLUT_KEY_UP:
-			teta += 0.1;
+			if (teta < 1)
+				teta += 0.05;
 			break;
 
 		case GLUT_KEY_DOWN:
-			teta -= 0.1;
+			if (teta > -1)
+				teta -= 0.05;
 			break;
 	}
 	updateCamera();
