@@ -30,6 +30,8 @@ GLuint *verts, *indcs,*texts, *norms;
 XMLParser parser;
 unordered_map<string, int> filesIndex;
 
+int optionDrawCurve = 1;
+
 int startX, startY, tracking = 0;
 float teta, alfa, radius;
 float px, py, pz;
@@ -284,7 +286,7 @@ void prepareLights() {
 void desenhaGrupo(Grupo g, float time) {
 	glPushMatrix();
 	for (int i = 0; i < g.transformacoes.size();i++) {	
-		g.transformacoes[i]->apply(time);
+		g.transformacoes[i]->apply(time, optionDrawCurve);
 	}
 	for (int i = 0; i < g.modelsIndex.size();i++) {
 		g.modelos[i].corFigura.apply();
@@ -408,6 +410,15 @@ void processKeys(unsigned char key, int xx, int yy){
 			py = py + 0.02 * dy;
 			pz = pz + 0.02 * dz;
 			reloadCamera();
+			break;
+		}
+
+		case 99: // 'c'
+		{
+			if (optionDrawCurve == 3)
+				optionDrawCurve = 1;
+			else
+				optionDrawCurve ++;
 			break;
 		}
 

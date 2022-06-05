@@ -13,7 +13,7 @@ class TranslacaoTemporizada : public Transformacao {
         int nr_pontos;
         float *prevY;
         TranslacaoTemporizada(float t,bool al,std::vector<float> ps);
-        void apply(float time);
+        void apply(float time, int option);
     
     private:
         void getCatmullRomPoint(float t, float *p0, float *p1, float *p2, float *p3, float *pos, float *deriv);

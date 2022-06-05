@@ -9,11 +9,11 @@ random.seed(2)
 
 def scale(i):
     if (i % 3) == 0:
-        f.write('\t\t\t\t\t<scale x="0.03" y="0.03" z="0.03" />\n')
+        f.write('\t\t\t\t\t<scale x="0.10" y="0.10" z="0.10" />\n')
     elif (i % 3) == 1:
-        f.write('\t\t\t\t\t<scale x="0.04" y="0.04" z="0.04" />\n')
+        f.write('\t\t\t\t\t<scale x="0.12" y="0.12" z="0.12" />\n')
     else:
-        f.write('\t\t\t\t\t<scale x="0.05" y="0.05" z="0.05" />\n')
+        f.write('\t\t\t\t\t<scale x="0.15" y="0.15" z="0.15" />\n')
 
 
 def buildTranslate():
@@ -60,6 +60,14 @@ def translate(i, time, args):
 def translateSingle(i, x, y, z):
     f.write(f'\t\t\t\t\t<translate x="{"{:.2f}".format(x)}" y="{"{:.2f}".format(y)}" z="{"{:.2f}".format(z)}"/>\n')
 
+def color(i):
+    f.write('\t\t\t\t\t\t<color>\n')
+    f.write('\t\t\t\t\t\t<diffuse R="200" G="200" B="200" />')
+    f.write('<ambient R="200" G="200" B="200" />')
+    f.write('<specular R="250" G="250" B="250" />')
+    f.write('<emissive R="0" G="0" B="0" />')
+    f.write('<shininess value="127" />\n')
+    f.write('\t\t\t\t\t\t</color>\n')
 
 for j in range(1, 51):
     f.write('\t\t<group>\n')
@@ -71,7 +79,9 @@ for j in range(1, 51):
         f.write('\t\t\t<!-- #A' + str(actualI) + ' -->\n')
         f.write('\t\t\t<group>\n')
         f.write('\t\t\t\t<models>\n')
-        f.write('\t\t\t\t\t<model file="sphere.3d" /> <!-- generator sphere 1 20 20 sphere.3d -->\n')
+        f.write('\t\t\t\t\t<model file="sphere.3d"> <!-- generator sphere 1 20 20 sphere.3d -->\n')
+        color(i)
+        f.write('\t\t\t\t\t</model>\n')
         f.write('\t\t\t\t</models>\n')
         f.write('\t\t\t\t<transform>\n')
         dist = random.randint(0, 20)

@@ -11,7 +11,7 @@ class RotacaoTemporizada : public Transformacao {
         float y;
         float z;
         RotacaoTemporizada(float t,float x1,float y1,float z1);
-        void apply(float time);
+        void apply(float time, int option);
 };
 
 #endif

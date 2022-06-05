@@ -6,6 +6,6 @@ Escala::Escala(float x1,float y1,float z1) {
     z = z1;
 }
 
-void Escala::apply(float time) {
+void Escala::apply(float time, int option) {
     glScalef(x,y,z);
 }

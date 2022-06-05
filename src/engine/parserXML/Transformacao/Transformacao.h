@@ -6,6 +6,6 @@
 
 class Transformacao {
     public:
-        virtual void apply(float time) = 0;
+        virtual void apply(float time, int option) = 0;
 };
 #endif

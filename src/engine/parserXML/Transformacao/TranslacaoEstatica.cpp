@@ -6,6 +6,6 @@ TranslacaoEstatica::TranslacaoEstatica(float x1,float y1,float z1){
     z = z1;
 }
 
-void TranslacaoEstatica::apply(float time) {
+void TranslacaoEstatica::apply(float time, int option) {
     glTranslatef(x,y,z);
 }
