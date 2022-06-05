@@ -4,7 +4,7 @@ f = open("saturn.xml", 'w')
 
 angle = 0
 inc = 2 * math.pi / 80
-radius = 22
+radius = 26
 random.seed(2)
 
 def scale(i):

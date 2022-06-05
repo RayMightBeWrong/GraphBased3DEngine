@@ -4,7 +4,7 @@ f = open("neptune.xml", 'w')
 
 angle = 0
 inc = 2 * math.pi / 14
-radius = 10
+radius = 14
 random.seed(20)
 
 def scale(i):

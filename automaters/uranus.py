@@ -4,7 +4,7 @@ f = open("uranus.xml", 'w')
 
 angle = 0
 inc = 2 * math.pi / 27
-radius = 10
+radius = 15
 random.seed(20)
 
 def scale(i):

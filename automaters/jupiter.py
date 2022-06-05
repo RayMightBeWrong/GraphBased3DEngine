@@ -4,7 +4,7 @@ f = open("jupiter.xml", 'w')
 
 angle = 0
 inc = 2 * math.pi / 80
-radius = 25
+radius = 28
 random.seed(20)
 
 def scale(i):
